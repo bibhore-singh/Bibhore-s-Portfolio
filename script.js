@@ -695,3 +695,124 @@ function initCopyrightYear() {
     yearEl.textContent = new Date().getFullYear();
   }
 }
+
+/* ==========================================================================
+   12. Certificate Lightbox Modal & Details
+   ========================================================================== */
+const certificateData = {
+  'ai-bootcamp': {
+    title: 'Hands-on Bootcamp on Artificial Intelligence',
+    issuer: 'BlockseBlock & OpenxAI',
+    badge: '🤖 Artificial Intelligence',
+    date: '28th August 2025',
+    img: 'certificates/ai-bootcamp-blockseblock.png',
+    pdf: 'certificates/ai-bootcamp-blockseblock.pdf',
+    desc: 'Awarded Certificate of Achievement for successfully completing the hands-on Bootcamp on Artificial Intelligence, demonstrating applied learning, neural architectures, AI development workflows, and professional engineering excellence.',
+    verifyUrl: null,
+    verifyText: null
+  },
+  'infosys-python': {
+    title: 'Introduction to Python',
+    issuer: 'Infosys Springboard',
+    badge: '🐍 Python Programming',
+    date: 'February 4, 2026',
+    img: 'certificates/infosys-springboard-python.png',
+    pdf: 'certificates/infosys-springboard-python.pdf',
+    desc: 'Course Completion Certificate awarded by Infosys Springboard validating core Python competencies including procedural logic, object-oriented programming, data structures, algorithm design, and clean scripting.',
+    verifyUrl: 'https://verify.onwingspan.com',
+    verifyText: 'Verify at Wingspan'
+  },
+  'google-algo-hunt': {
+    title: 'Algo-N-Hunt Competitive Event',
+    issuer: 'Google Student Ambassador Program @ LPU',
+    badge: '🌐 Google Student Program',
+    date: '22nd November 2025',
+    img: 'certificates/google-student-ambassador-algo-n-hunt.png',
+    pdf: 'certificates/google-student-ambassador-algo-n-hunt.pdf',
+    desc: 'Certificate of Participation awarded as part of the Google Student Ambassador Program for competitive algorithmic problem solving, active leadership, and dedication to fostering technical learning and innovation within the university community.',
+    verifyUrl: null,
+    verifyText: null
+  },
+  'optimus-algo-hunt': {
+    title: 'ALGO-N-HUNT Coding & Puzzle Marathon',
+    issuer: 'Student Organization OPTIMUS, LPU',
+    badge: '⚡ Competitive Coding',
+    date: '22nd November 2025',
+    img: 'certificates/optimus-algo-n-hunt.png',
+    pdf: 'certificates/optimus-algo-n-hunt.pdf',
+    desc: 'Certificate of Participation recognizing active participation, analytical thinking, teamwork, algorithmic efficiency, and problem-solving excellence throughout an intensive multi-round coding, puzzle & gaming marathon.',
+    verifyUrl: null,
+    verifyText: null
+  },
+  'hack-node-india': {
+    title: 'Hack Node India Hackathon',
+    issuer: 'BlockseBlock & Web3 Sabha',
+    badge: '🏆 Web3 & Hackathon',
+    date: 'September 2025',
+    img: 'certificates/hack-node-india-hackathon.png',
+    pdf: 'certificates/hack-node-india-hackathon.pdf',
+    desc: 'Certificate of Participation presented for participating in the nationwide Hack Node India Hackathon, delivering collaborative engineering prototypes and decentralized solutions. Certificate ID: BSB-KALLDO-MEZPI544.',
+    verifyUrl: null,
+    verifyText: null
+  }
+};
+
+window.openCertModal = function(certId) {
+  const cert = certificateData[certId];
+  if (!cert) return;
+
+  const backdrop = document.getElementById('certModalBackdrop');
+  const img = document.getElementById('certModalImg');
+  const title = document.getElementById('certModalTitle');
+  const issuer = document.getElementById('certModalIssuer');
+  const badge = document.getElementById('certModalBadge');
+  const date = document.getElementById('certModalDate');
+  const desc = document.getElementById('certModalDesc');
+  const pdfBtn = document.getElementById('certModalPdfBtn');
+  const verifyBtn = document.getElementById('certModalVerifyBtn');
+
+  if (!backdrop) return;
+
+  img.src = cert.img;
+  img.alt = cert.title;
+  title.textContent = cert.title;
+  issuer.textContent = cert.issuer;
+  badge.textContent = cert.badge;
+  date.textContent = cert.date;
+  desc.textContent = cert.desc;
+
+  if (pdfBtn) {
+    pdfBtn.href = cert.pdf;
+  }
+
+  if (verifyBtn) {
+    if (cert.verifyUrl) {
+      verifyBtn.href = cert.verifyUrl;
+      verifyBtn.style.display = 'inline-flex';
+      const verifySpan = verifyBtn.querySelector('span');
+      if (verifySpan) verifySpan.textContent = cert.verifyText || 'Verify Credential';
+    } else {
+      verifyBtn.style.display = 'none';
+    }
+  }
+
+  backdrop.classList.add('active');
+  document.body.style.overflow = 'hidden';
+};
+
+window.closeCertModal = function(event) {
+  if (event && event.target && event.target.closest && event.target.closest('.cert-modal-dialog') && !event.target.closest('.cert-modal-close')) {
+    return;
+  }
+  const backdrop = document.getElementById('certModalBackdrop');
+  if (backdrop) {
+    backdrop.classList.remove('active');
+  }
+  document.body.style.overflow = '';
+};
+
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    closeCertModal();
+  }
+});
