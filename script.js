@@ -711,6 +711,17 @@ const certificateData = {
     verifyUrl: null,
     verifyText: null
   },
+  'infosys-ai': {
+    title: 'Introduction to Artificial Intelligence',
+    issuer: 'Infosys Springboard',
+    badge: '🤖 Artificial Intelligence',
+    date: 'March 25, 2026',
+    img: 'certificates/infosys-springboard-ai.png',
+    pdf: 'certificates/infosys-springboard-ai.pdf',
+    desc: 'Course Completion Certificate awarded by Infosys Springboard validating foundational artificial intelligence principles, cognitive architectures, machine learning concepts, neural algorithms, and applied intelligence systems.',
+    verifyUrl: 'https://verify.onwingspan.com',
+    verifyText: 'Verify at Wingspan'
+  },
   'infosys-python': {
     title: 'Introduction to Python',
     issuer: 'Infosys Springboard',
@@ -721,6 +732,17 @@ const certificateData = {
     desc: 'Course Completion Certificate awarded by Infosys Springboard validating core Python competencies including procedural logic, object-oriented programming, data structures, algorithm design, and clean scripting.',
     verifyUrl: 'https://verify.onwingspan.com',
     verifyText: 'Verify at Wingspan'
+  },
+  'linkedin-time-mgmt': {
+    title: 'Time Management Tips',
+    issuer: 'LinkedIn Learning',
+    badge: '⏱️ Time Management',
+    date: 'November 2, 2025',
+    img: 'certificates/linkedin-learning-time-management.png',
+    pdf: 'certificates/linkedin-learning-time-management.pdf',
+    desc: 'Course Completion Certificate awarded by LinkedIn Learning for completing 7 hours 51 minutes of intensive professional training covering sustainable productivity, distraction management, workload prioritization, and high-efficiency execution.',
+    verifyUrl: 'https://www.linkedin.com/learning/certificates/9e4f18455da5e2f6db15eb1b788d3394c840b2fbac25e7fec8ec56d50b114e8a',
+    verifyText: 'Verify on LinkedIn'
   },
   'google-algo-hunt': {
     title: 'Algo-N-Hunt Competitive Event',
