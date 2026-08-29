@@ -6,10 +6,12 @@
   <title>FAKEBUSTER — AI-Powered Fake News Detection System</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
+  <!-- Floating particles -->
+  <canvas id="particle-canvas"></canvas>
   <!-- Ambient background glow -->
   <div class="ambient-glow glow-top"></div>
   <div class="ambient-glow glow-bottom"></div>
@@ -40,13 +42,13 @@
     <div class="hero-container">
       <div class="hero-tag">
         <span class="status-dot"></span>
-        <span>Passive Aggressive Classifier · 96% Accuracy</span>
+        <span>AI Fact-Checker &bull; 96% Accuracy &bull; Live</span>
       </div>
       <h1 class="hero-title">
         FAKEBUSTER <br>
         <span class="gradient-text">AI-Powered Fake News Detection</span>
       </h1>
-      <p class="hero-tagline" style="font-size: 1.35rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 14px; letter-spacing: -0.01em;">
+      <p class="hero-tagline" style="font-size: 1.35rem; font-weight: 700; color: #ef4444; margin-bottom: 14px; letter-spacing: -0.01em;">
         “Bust the Fake. Find the Facts.”
       </p>
       <p class="hero-subtitle">
@@ -61,6 +63,12 @@
         <a href="#model" class="btn btn-outline btn-lg">
           <span>See How It Works</span>
         </a>
+      </div>
+
+      <!-- Live scanning ticker -->
+      <div class="scan-ticker" style="margin-top:28px;display:flex;align-items:center;gap:12px;background:rgba(239,68,68,0.08);border:1px solid rgba(239,68,68,0.25);border-radius:999px;padding:8px 18px;max-width:660px;margin-left:auto;margin-right:auto;overflow:hidden;">
+        <span style="font-size:0.72rem;font-weight:700;color:#ef4444;white-space:nowrap;letter-spacing:0.06em;">&#128308; LIVE</span>
+        <span id="scan-ticker-text" style="font-size:0.82rem;color:#b8949a;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">Scanning: &quot;WHO claims new health data suppressed by officials...&quot;</span>
       </div>
 
       <!-- Quick Metrics Grid -->
@@ -157,5 +165,98 @@
       <p class="footer-sub">“Bust the Fake. Find the Facts.” · Engineered with Python, Scikit-Learn, Flask, and Passive Aggressive Classification.</p>
     </div>
   </footer>
+
+  <script>
+  /* ─── Floating Particle Canvas ─── */
+  (function(){
+    const canvas = document.getElementById('particle-canvas');
+    if(!canvas) return;
+    const ctx = canvas.getContext('2d');
+    let W, H, particles = [];
+    const COLORS = ['#ef4444','#f97316','#3b82f6','#6366f1','#fca5a5','#fb923c'];
+    function resize(){ W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+    resize(); window.addEventListener('resize', resize);
+    for(let i=0;i<75;i++) particles.push({
+      x: Math.random()*1920, y: Math.random()*1080,
+      r: Math.random()*1.8+0.4,
+      dx: (Math.random()-0.5)*0.35,
+      dy: (Math.random()-0.5)*0.35,
+      c: COLORS[Math.floor(Math.random()*COLORS.length)],
+      o: Math.random()*0.45+0.15
+    });
+    function draw(){
+      ctx.clearRect(0,0,W,H);
+      particles.forEach(p=>{
+        p.x+=p.dx; p.y+=p.dy;
+        if(p.x<0)p.x=W; if(p.x>W)p.x=0;
+        if(p.y<0)p.y=H; if(p.y>H)p.y=0;
+        ctx.beginPath();
+        ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+        ctx.fillStyle=p.c;
+        ctx.globalAlpha=p.o;
+        ctx.fill();
+      });
+      ctx.globalAlpha=1;
+      requestAnimationFrame(draw);
+    }
+    draw();
+  })();
+
+  /* ─── Live Ticker Rotation ─── */
+  const headlines = [
+    'Scanning: "WHO claims new health data suppressed by officials..."',
+    'Scanning: "Viral photo of floods traced to 2017 storm — FAKE"',
+    'Scanning: "Election official resigns amid ballot controversy"',
+    'Scanning: "Scientists confirm cure — No study found, FABRICATED"',
+    'Scanning: "Celebrity death hoax spreads on social media — FALSE"',
+    'Scanning: "Government announces new tax relief — VERIFIED REAL"'
+  ];
+  let ti = 0;
+  const ticker = document.getElementById('scan-ticker-text');
+  if(ticker){
+    ticker.style.transition = 'opacity 0.35s';
+    setInterval(()=>{
+      ti = (ti+1) % headlines.length;
+      ticker.style.opacity = '0';
+      setTimeout(()=>{ ticker.textContent = headlines[ti]; ticker.style.opacity = '1'; }, 380);
+    }, 3400);
+  }
+
+  /* ─── Count-up on Metric Cards ─── */
+  document.querySelectorAll('.metric-val').forEach(el => {
+    const txt = el.textContent.trim();
+    const num = parseFloat(txt);
+    if(isNaN(num)) return;
+    const suffix = txt.replace(num.toString(), '');
+    el.textContent = '0' + suffix;
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(!e.isIntersecting) return;
+        let s = 0, step = num / (1200/16);
+        const t = setInterval(()=>{
+          s += step;
+          if(s >= num){ el.textContent = num + suffix; clearInterval(t); }
+          else { el.textContent = Math.floor(s) + suffix; }
+        }, 16);
+        obs.unobserve(el);
+      });
+    }, {threshold: 0.5});
+    obs.observe(el);
+  });
+
+  /* ─── Card tilt on mousemove ─── */
+  document.querySelectorAll('.metric-card, .pac-card, .box-card').forEach(card => {
+    card.addEventListener('mousemove', e => {
+      const r = card.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top)  / r.height - 0.5;
+      card.style.transform = `translateY(-6px) rotateX(${-y*8}deg) rotateY(${x*8}deg) scale(1.02)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      card.style.transition = 'transform 0.5s cubic-bezier(.34,1.56,.64,1)';
+    });
+  });
+  </script>
 </body>
 </html>
