@@ -2573,23 +2573,23 @@
       <div class="fakenews-tabs-nav">
         <button class="fakenews-tab-btn active" id="fnTabBtn-analyzer" onclick="switchFakeNewsTab('analyzer')">
           <span class="tab-icon">🔍</span>
-          <span>Live Credibility Analyzer</span>
+          <span>Check Single Article</span>
         </button>
         <button class="fakenews-tab-btn" id="fnTabBtn-source" onclick="switchFakeNewsTab('source')">
           <span class="tab-icon">📊</span>
-          <span>Source Visibility Weighting</span>
+          <span>News Source Trust &amp; Feed Reach</span>
         </button>
         <button class="fakenews-tab-btn" id="fnTabBtn-metrics" onclick="switchFakeNewsTab('metrics')">
           <span class="tab-icon">📈</span>
-          <span>Model Metrics &amp; Confusion Matrix</span>
+          <span>AI Accuracy &amp; Comparisons</span>
         </button>
         <button class="fakenews-tab-btn" id="fnTabBtn-arch" onclick="switchFakeNewsTab('arch')">
           <span class="tab-icon">⚡</span>
-          <span>Architecture &amp; Pipeline</span>
+          <span>How AI Reads Text &amp; Blueprints</span>
         </button>
         <button class="fakenews-tab-btn" id="fnTabBtn-media" onclick="switchFakeNewsTab('media')">
           <span class="tab-icon">📸</span>
-          <span>Media &amp; Deepfake Forensics</span>
+          <span>Check Photos &amp; Videos (Deepfakes)</span>
         </button>
       </div>
 
@@ -2602,10 +2602,10 @@
             <!-- Left: Inputs & Sample Chooser -->
             <div class="fn-input-card">
               <div class="fn-card-title-row">
-                <span>Select Preset News Sample or Input Custom Story</span>
-                <span class="model-badge">PAC Hinge-Loss Inference</span>
+                <span>Step 1: Pick an Example or Type News Details</span>
+                <span class="model-badge">AI Fact-Check</span>
               </div>
-              <p class="fn-instruction">Click a pre-validated sample or type your own news headline and content below:</p>
+              <p class="fn-instruction">Click an example news story below or type your own headline and text to fact-check:</p>
 
               <!-- Sample Buttons -->
               <div class="fn-sample-buttons">
@@ -2644,7 +2644,7 @@
 
                 <div class="fn-form-actions">
                   <button class="btn btn-primary btn-sm" onclick="runNewsAnalysis()">
-                    <span>⚡ Classify Authenticity with PAC</span>
+                    <span>⚡ Fact-Check This Story</span>
                   </button>
                   <button class="btn btn-outline btn-sm" onclick="resetNewsFields()">
                     <span>Clear</span>
@@ -2656,8 +2656,8 @@
             <!-- Right: Real-time Evaluation Results -->
             <div class="fn-result-card">
               <div class="fn-result-header">
-                <h3>PAC Classifier Diagnosis</h3>
-                <span class="fn-status-pill" id="fnVerdictBadge">⏳ Ready to Analyze</span>
+                <h3>Step 2: Fact-Check Result</h3>
+                <span class="fn-status-pill" id="fnVerdictBadge">⏳ Ready to Check</span>
               </div>
 
               <!-- Verdict Hero Box -->
@@ -2665,7 +2665,7 @@
                 <div class="verdict-icon-big" id="fnVerdictIcon">📰</div>
                 <div class="verdict-meta">
                   <span class="verdict-label-sub" id="fnVerdictSub">Prediction Status</span>
-                  <h4 class="verdict-headline" id="fnVerdictTitle">Click "Classify Authenticity"</h4>
+                  <h4 class="verdict-headline" id="fnVerdictTitle">Click "Fact-Check This Story"</h4>
                   <p class="verdict-detail" id="fnVerdictSourceText">Source: Initializing...</p>
                 </div>
               </div>
@@ -2673,7 +2673,7 @@
               <!-- Confidence Progress Bar -->
               <div class="fn-meter-box">
                 <div class="meter-info-row">
-                  <span>PAC Decision Confidence</span>
+                  <span>AI Confidence Level</span>
                   <span class="meter-pct" id="fnConfidenceText">--%</span>
                 </div>
                 <div class="meter-track-bg">
@@ -2683,7 +2683,7 @@
 
               <!-- Salient N-Gram Terms Detected -->
               <div class="fn-keywords-box">
-                <span class="kw-title">Salient TF-IDF N-Gram Markers Detected:</span>
+                <span class="kw-title">Key Trigger Words Flagged by AI:</span>
                 <div class="kw-chips-list" id="fnKeywordsList">
                   <span class="kw-chip">astronomers</span>
                   <span class="kw-chip">james webb</span>
@@ -2695,7 +2695,7 @@
               <!-- Social Feed Visibility Weight Box -->
               <div class="fn-social-weight-box" id="fnWeightBox">
                 <div class="weight-head">
-                  <span>Social Media Visibility Weight (Reach Multiplier):</span>
+                  <span>Recommended Social Feed Reach:</span>
                   <span class="weight-score" id="fnWeightMultiplier">--x</span>
                 </div>
                 <p class="weight-desc" id="fnWeightDesc">
@@ -2717,21 +2717,21 @@
           </div>
         </div>
 
-        <!-- Tab 2: Source Reputation & Visibility Weighting -->
+        <!-- Tab 2: News Source Trust & Feed Reach -->
         <div class="fakenews-tab-panel" id="fnTab-source">
           <div class="fn-source-grid">
             <div class="fn-source-explain-card">
-              <div class="section-badge-mini">Problem Formulation Solved</div>
-              <h3>Why Focus on Source-Level Visibility Weighting?</h3>
+              <div class="section-badge-mini">Why This Works Better</div>
+              <h3>Why We Track Publisher Honesty Over Time</h3>
               <p>
-                Traditional fake news filters focus exclusively on single articles. This creates a severe dilemma: false alarms accidentally silence legitimate newsrooms, while serial disinformers simply modify article phrasing to evade keyword filters.
+                Standard filters only look at one article at a time. If an article contains humor or satire, regular tools mistakenly flag it. Meanwhile, serial fake news creators easily slip past filters by rewording headlines.
               </p>
               <div class="source-callout-box">
-                <strong>Our Core Innovation:</strong> By tracking news sources across multiple articles, we broaden our article misclassification tolerance. Once a source is established as a chronic producer of fake news, social media networks can apply dynamic visibility weights to throttle its reach across algorithmic feeds.
+                <strong>Our Smart Solution:</strong> By tracking multiple stories published by the same source, we build an honest trust score. If a website consistently pushes fake news, social platforms can automatically reduce its reach in recommendation feeds.
               </div>
 
               <div class="source-preset-picker">
-                <label>Choose a Preset News Source to Test:</label>
+                <label>Try an Example Publisher:</label>
                 <div class="preset-source-chips">
                   <button class="source-chip-btn active" onclick="loadSourceSimulation('reputable')">
                     🏛️ Verified Science Journal
@@ -2747,10 +2747,10 @@
 
               <!-- Instant Domain Credibility Checker -->
               <div class="domain-quick-check-wrap">
-                <label for="fnDomainSearchInput">Instant Domain Credibility Quick-Check:</label>
+                <label for="fnDomainSearchInput">Check Any News Website or Publisher:</label>
                 <div class="domain-input-inline">
                   <input type="text" id="fnDomainSearchInput" placeholder="e.g. reuters, nature, bbc, viralhoaxnews..." onkeyup="checkDomainQuick(event)">
-                  <button class="btn btn-outline btn-sm" onclick="checkDomainQuick()">Verify</button>
+                  <button class="btn btn-outline btn-sm" onclick="checkDomainQuick()">Check</button>
                 </div>
                 <div class="domain-quick-result" id="fnDomainQuickResult" style="display: none;">
                   <!-- Live result -->
@@ -2761,14 +2761,14 @@
             <!-- Interactive Source Calculator -->
             <div class="fn-source-sim-card">
               <div class="sim-header">
-                <h4>Interactive Feed Visibility Simulator</h4>
-                <span class="sim-tag">Dynamic Multiplier</span>
+                <h4>Social Media Feed Reach Simulator</h4>
+                <span class="sim-tag">Live Reach Calculator</span>
               </div>
 
               <div class="sim-controls">
                 <div class="sim-control-group">
                   <div class="sim-label-row">
-                    <label for="simTotalArticles">Total Articles Monitored from Source:</label>
+                    <label for="simTotalArticles">Total Articles Checked From This Publisher:</label>
                     <span class="sim-val" id="simTotalDisplay">20</span>
                   </div>
                   <input type="range" id="simTotalArticles" min="5" max="50" value="20" oninput="updateSourceSim()">
@@ -2776,7 +2776,7 @@
 
                 <div class="sim-control-group">
                   <div class="sim-label-row">
-                    <label for="simFakeArticles">Articles Flagged as Unreliable / Fake:</label>
+                    <label for="simFakeArticles">Articles Caught as Fake:</label>
                     <span class="sim-val danger" id="simFakeDisplay">2</span>
                   </div>
                   <input type="range" id="simFakeArticles" min="0" max="20" value="2" oninput="updateSourceSim()">
@@ -2786,16 +2786,16 @@
               <!-- Output Display -->
               <div class="sim-results-box">
                 <div class="sim-stat-row">
-                  <span class="sim-stat-lbl">Disinformation Ratio:</span>
+                  <span class="sim-stat-lbl">Percentage of Fake Stories:</span>
                   <span class="sim-stat-num" id="simRatioDisplay">10.0%</span>
                 </div>
                 <div class="sim-stat-row">
-                  <span class="sim-stat-lbl">Calculated Social Visibility Weight:</span>
+                  <span class="sim-stat-lbl">Allowed Post Reach in User Feeds:</span>
                   <span class="sim-stat-num highlight" id="simWeightDisplay">0.975x</span>
                 </div>
                 <div class="sim-stat-row">
-                  <span class="sim-stat-lbl">Algorithmic Feed Action:</span>
-                  <span class="sim-stat-badge safe" id="simActionDisplay">Full Distribution (Safe)</span>
+                  <span class="sim-stat-lbl">Recommended Feed Action:</span>
+                  <span class="sim-stat-badge safe" id="simActionDisplay">Full Reach (Safe)</span>
                 </div>
 
                 <!-- Visual Reach Representation -->
@@ -2810,30 +2810,30 @@
           </div>
         </div>
 
-        <!-- Tab 3: Model Benchmarks & Confusion Matrix -->
+        <!-- Tab 3: Model Performance -->
         <div class="fakenews-tab-panel" id="fnTab-metrics">
           <div class="fn-metrics-container">
             <!-- Top Metric Badges -->
             <div class="metrics-kpi-row">
               <div class="kpi-card">
                 <div class="kpi-num">96.0%</div>
-                <div class="kpi-lbl">Evaluation Accuracy</div>
-                <p>Achieved on Kaggle news verification test set.</p>
+                <div class="kpi-lbl">Overall Accuracy</div>
+                <p>Tested across 20,800 real-world news articles.</p>
               </div>
               <div class="kpi-card">
                 <div class="kpi-num">0.96</div>
-                <div class="kpi-lbl">F1-Score (Macro)</div>
-                <p>Harmonized balance between precision and recall.</p>
+                <div class="kpi-lbl">Balanced Score</div>
+                <p>Even balance between catching fakes and avoiding false alarms.</p>
               </div>
               <div class="kpi-card">
                 <div class="kpi-num">&lt;2ms</div>
-                <div class="kpi-lbl">Inference Latency</div>
-                <p>Online margin boundary execution per article.</p>
+                <div class="kpi-lbl">Response Speed</div>
+                <p>Lightning-fast classification per article.</p>
               </div>
               <div class="kpi-card">
                 <div class="kpi-num">100%</div>
-                <div class="kpi-lbl">Online Adaptable</div>
-                <p>Zero full-retraining downtime required.</p>
+                <div class="kpi-lbl">Real-Time Learning</div>
+                <p>Updates immediately without system downtime.</p>
               </div>
             </div>
 
@@ -2842,56 +2842,56 @@
               <!-- Confusion Matrix -->
               <div class="metric-block-card">
                 <div class="card-head-row">
-                  <h4 id="fnModalCmTitle">Confusion Matrix: Passive Aggressive Classifier</h4>
+                  <h4 id="fnModalCmTitle">Accuracy Breakdown: Real vs Fake Stories</h4>
                   <span class="badge-pill safe" id="fnModalCmBadge">96.08% Acc</span>
                 </div>
                 <div class="confusion-matrix-table">
                   <div class="cm-row cm-header">
                     <div class="cm-cell empty"></div>
-                    <div class="cm-cell">Predicted Real (0)</div>
-                    <div class="cm-cell">Predicted Fake (1)</div>
+                    <div class="cm-cell">Predicted Real</div>
+                    <div class="cm-cell">Predicted Fake</div>
                   </div>
                   <div class="cm-row">
-                    <div class="cm-cell cm-header-vert">Actual Real (0)</div>
+                    <div class="cm-cell cm-header-vert">Actual Real</div>
                     <div class="cm-cell cm-val-good">
                       <span class="cell-num" id="fnModalCmTN">1,048</span>
-                      <span class="cell-tag">True Negative (48.9%)</span>
+                      <span class="cell-tag">Correct Real (48.9%)</span>
                     </div>
                     <div class="cm-cell cm-val-bad">
                       <span class="cell-num" id="fnModalCmFP">43</span>
-                      <span class="cell-tag">False Positive (2.0%)</span>
+                      <span class="cell-tag">Mistakenly Fake (2.0%)</span>
                     </div>
                   </div>
                   <div class="cm-row">
-                    <div class="cm-cell cm-header-vert">Actual Fake (1)</div>
+                    <div class="cm-cell cm-header-vert">Actual Fake</div>
                     <div class="cm-cell cm-val-bad">
                       <span class="cell-num" id="fnModalCmFN">41</span>
-                      <span class="cell-tag">False Negative (1.9%)</span>
+                      <span class="cell-tag">Missed Fake (1.9%)</span>
                     </div>
                     <div class="cm-cell cm-val-good">
                       <span class="cell-num" id="fnModalCmTP">1,012</span>
-                      <span class="cell-tag">True Positive (47.2%)</span>
+                      <span class="cell-tag">Correct Fake Caught (47.2%)</span>
                     </div>
                   </div>
                 </div>
 
                 <!-- Dataset Statistics -->
                 <div class="cm-dataset-meta">
-                  <span>📊 <strong>Kaggle Benchmark</strong>: 20,800 articles · 10,387 Reliable (49.9%) / 10,413 Unreliable (50.1%) · 39 nulls handled</span>
+                  <span>📊 <strong>Testing Dataset</strong>: 20,800 articles · 10,387 Real (49.9%) / 10,413 Fake (50.1%) · 39 empty rows removed</span>
                 </div>
               </div>
 
               <!-- Model Comparison Table with Clickable Rows -->
               <div class="metric-block-card">
-                <h4>Empirical Algorithm Benchmark (Click Row to Inspect)</h4>
+                <h4>Comparison Across 4 AI Models (Click Row to Inspect)</h4>
                 <div class="benchmark-table-wrap">
                   <table class="benchmark-table">
                     <thead>
                       <tr>
-                        <th>Algorithm</th>
+                        <th>AI Model</th>
                         <th>Accuracy</th>
-                        <th>F1-Score</th>
-                        <th>Latency</th>
+                        <th>Balanced Score</th>
+                        <th>Speed</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -2902,67 +2902,62 @@
                         <td>1.4 ms</td>
                       </tr>
                       <tr class="highlight-row" id="fnRow-linearsvc" onclick="switchModalBenchmarkModel('linearsvc')">
-                        <td><strong>Linear SVC</strong> <span class="mini-tag">Margin</span></td>
+                        <td><strong>Linear SVC</strong> <span class="mini-tag">Support Vector</span></td>
                         <td>94.12%</td>
                         <td>0.9412</td>
                         <td>3.8 ms</td>
                       </tr>
                       <tr class="highlight-row" id="fnRow-logreg" onclick="switchModalBenchmarkModel('logreg')">
-                        <td><strong>Logistic Regression (L2)</strong></td>
+                        <td><strong>Logistic Regression</strong> <span class="mini-tag">Baseline</span></td>
                         <td>91.50%</td>
                         <td>0.9157</td>
-                        <td>2.1 ms</td>
+                        <td>2.6 ms</td>
                       </tr>
                       <tr class="highlight-row" id="fnRow-mnb" onclick="switchModalBenchmarkModel('mnb')">
-                        <td><strong>Multinomial Naive Bayes</strong></td>
+                        <td><strong>Naive Bayes (MNB)</strong> <span class="mini-tag">Word Counter</span></td>
                         <td>88.42%</td>
                         <td>0.8834</td>
-                        <td>0.9 ms</td>
+                        <td>1.8 ms</td>
                       </tr>
                     </tbody>
                   </table>
                 </div>
-                <p class="model-theory-hint" id="fnModalModelTheory">
-                  PAC updates only when hinge loss &gt; 0, remaining passive on correctly-classified articles with ultra-low latency.
-                </p>
+                <p class="benchmark-hint">PAC was selected for FAKEBUSTER because it handles continuous new vocabulary and delivers 96.08% accuracy at sub-2ms speed.</p>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Tab 4: Architecture & Pipeline -->
+        <!-- Tab 4: System Architecture -->
         <div class="fakenews-tab-panel" id="fnTab-arch">
           <div class="fn-arch-container">
-            <h3 class="arch-heading">End-to-End System Pipeline &amp; Data Flow</h3>
-            <p class="arch-sub">From raw multi-attribute news ingestion to real-time social media visibility throttling:</p>
-
-            <div class="pipeline-steps-grid">
+            <div class="arch-pipeline-steps">
               <div class="p-step-card">
                 <div class="p-step-badge">Step 1</div>
                 <div class="p-step-icon">📥</div>
-                <h4>Data Ingestion &amp; Imputation</h4>
-                <p>Loads 20,800 Kaggle articles (`train_df.dropna()`). Clean 50/50 balance across reliable and unreliable categories.</p>
+                <h4>Data Ingestion &amp; Cleaning</h4>
+                <p>Loads 20,800 articles from the benchmark dataset. Balanced 50/50 across real and fake stories.</p>
               </div>
 
               <div class="p-step-card">
                 <div class="p-step-badge">Step 2</div>
                 <div class="p-step-icon">🌱</div>
-                <h4>NLTK Regex &amp; Lemmatizer</h4>
-                <p>Strips `[^a-zA-Z]`, lowercases, filters 179 NLTK English stopwords, and resolves WordNet morphological lemmas.</p>
+                <h4>Word Cleaning &amp; Lemmatizing</h4>
+                <p>Removes punctuation, makes lowercase, drops 179 filler words, and turns words into root forms.</p>
               </div>
 
               <div class="p-step-card">
                 <div class="p-step-badge">Step 3</div>
                 <div class="p-step-icon">🔠</div>
-                <h4>TF-IDF N-Gram Vectorizer</h4>
-                <p>Constructs unigram and bigram vocabulary with sublinear term-frequency scaling and stopword filtration (<code class="inline-code">vector.pkl</code>).</p>
+                <h4>Score Word Importance</h4>
+                <p>Scores keywords by how strongly they indicate authenticity or misinformation (<code class="inline-code">vector.pkl</code>).</p>
               </div>
 
               <div class="p-step-card">
                 <div class="p-step-badge">Step 4</div>
                 <div class="p-step-icon">🧠</div>
-                <h4>PAC Margin Classification</h4>
-                <p>Computes decision boundary distance. If hinge loss = 0, weights remain passive; otherwise, aggressively updates (<code class="inline-code">model.pkl</code>).</p>
+                <h4>AI Decision &amp; Reach Control</h4>
+                <p>Scores the article in milliseconds, assigns a trust confidence, and suggests social feed reach (<code class="inline-code">model.pkl</code>).</p>
               </div>
             </div>
 
@@ -2972,8 +2967,8 @@
                 <div class="nih-title">
                   <span class="nih-icon">🔬</span>
                   <div>
-                    <h4>Interactive NLP Preprocessing &amp; Lemmatizer Lab</h4>
-                    <p>Observe how raw text is sanitized, stripped of stopwords, and lemmatized in real time:</p>
+                    <h4>Interactive Text Breakdown Lab</h4>
+                    <p>See how raw news text is cleaned, stripped of filler words, and broken down in real time:</p>
                   </div>
                 </div>
                 <div class="nih-presets">
@@ -2987,17 +2982,17 @@
 
               <div class="nlp-stages-breakdown">
                 <div class="nsb-step">
-                  <span class="nsb-lbl">1. Regex Cleaned:</span>
+                  <span class="nsb-lbl">1. Remove Punctuation:</span>
                   <div class="nsb-box" id="fnModalNlpStage1">BREAKING Secret government insiders admit confidential lunar frequencies control global weather</div>
                 </div>
                 <div class="nsb-step">
-                  <span class="nsb-lbl">2. Stopwords Filtered:</span>
+                  <span class="nsb-lbl">2. Remove Filler Words:</span>
                   <div class="nsb-box" id="fnModalNlpStage2">
                     <span class="token keep">breaking</span> <span class="token keep">secret</span> <span class="token keep">government</span> <span class="token keep">insiders</span> <span class="token keep">admit</span> <span class="token keep">confidential</span> <span class="token keep">lunar</span> <span class="token keep">frequencies</span> <span class="token keep">control</span> <span class="token keep">global</span> <span class="token keep">weather</span>
                   </div>
                 </div>
                 <div class="nsb-step">
-                  <span class="nsb-lbl">3. WordNet Lemmatized:</span>
+                  <span class="nsb-lbl">3. Convert to Root Words:</span>
                   <div class="nsb-box" id="fnModalNlpStage3">
                     <span class="lemma-token">breaking → <strong>break</strong></span>
                     <span class="lemma-token">insiders → <strong>insider</strong></span>
@@ -3012,7 +3007,7 @@
             <div class="arch-blueprints-row">
               <div class="blueprint-card">
                 <div class="bp-head">
-                  <span>System Architecture Block Diagram</span>
+                  <span>System Block Diagram Blueprint</span>
                   <a href="projects/fake-news-detector/Images/BlockDiagram.svg" target="_blank" class="bp-link">Full View ↗</a>
                 </div>
                 <div class="bp-preview">
@@ -3022,7 +3017,7 @@
 
               <div class="blueprint-card">
                 <div class="bp-head">
-                  <span>Inference Process Flow Diagram</span>
+                  <span>Inference Process Flow Blueprint</span>
                   <a href="projects/fake-news-detector/Images/Processflow.svg" target="_blank" class="bp-link">Full View ↗</a>
                 </div>
                 <div class="bp-preview">
@@ -3042,16 +3037,16 @@
           </div>
         </div>
 
-        <!-- Tab 5: Multimodal Media & Deepfake Forensics -->
+        <!-- Tab 5: Check Photos & Videos (Deepfakes) -->
         <div class="fakenews-tab-panel" id="fnTab-media">
           <div class="fn-media-grid">
             <!-- Left: Media Upload & Presets -->
             <div class="fn-media-upload-card">
               <div class="fn-card-title-row">
-                <span>Upload Image / Video for Forensic Verification</span>
-                <span class="model-badge">Multimodal Scanner</span>
+                <span>Step 1: Upload Photo or Video (or Pick an Example)</span>
+                <span class="model-badge">Vision AI + Text OCR</span>
               </div>
-              <p class="fn-instruction">Upload photos, news screenshots, memes, or videos to detect visual manipulation, AI generation, and out-of-context falsehoods:</p>
+              <p class="fn-instruction">Upload photos, news screenshots, memes, or videos to detect digital tampering, AI generation, and out-of-context falsehoods:</p>
 
               <!-- Drag & Drop Zone -->
               <div class="media-dropzone" id="fnMediaDropzone" onclick="triggerMediaInput()">
@@ -3066,19 +3061,19 @@
 
               <!-- Presets Section -->
               <div class="media-presets-wrap">
-                <label>Or Test with Realistic Verification Presets:</label>
+                <label>Try an Example:</label>
                 <div class="media-preset-chips">
                   <button type="button" class="media-preset-btn active" onclick="loadMediaPreset('fakeScreenshot')">
-                    🚨 Doctored News Headline
+                    🚨 Edited Headline
                   </button>
                   <button type="button" class="media-preset-btn" onclick="loadMediaPreset('deepfakeAi')">
                     🤖 AI Deepfake Photo
                   </button>
                   <button type="button" class="media-preset-btn" onclick="loadMediaPreset('authenticPress')">
-                    ✅ Authentic Press Release
+                    ✅ Authentic Press Photo
                   </button>
                   <button type="button" class="media-preset-btn" onclick="loadMediaPreset('outOfContextVideo')">
-                    🎥 Recycled Viral Video
+                    🎥 Recycled Video
                   </button>
                 </div>
               </div>
@@ -3095,7 +3090,7 @@
                   <canvas id="fnMediaCanvas" style="display: none;"></canvas>
                   <div class="media-placeholder" id="fnMediaPlaceholder">
                     <span class="ph-icon">🔬</span>
-                    <span>Ready for Forensic Multimodal Inspection</span>
+                    <span>Ready for Verification Scan</span>
                   </div>
                 </div>
 
@@ -3103,7 +3098,7 @@
                   <span class="preview-filename" id="fnMediaFilename">sample_breaking_news.png</span>
                   <div class="preview-tools">
                     <button type="button" class="tool-toggle-btn" id="fnBtnElaToggle" onclick="toggleElaMode()">
-                      <span>👁️ Error Level Analysis (ELA)</span>
+                      <span>👁️ Tampering Heatmap (ELA)</span>
                     </button>
                     <button type="button" class="btn btn-primary btn-sm" onclick="runMediaForensicScan()">
                       <span>⚡ Re-Scan Media</span>
@@ -3118,8 +3113,8 @@
                 <div class="media-verdict-hero fake-active" id="fnMediaVerdictHero">
                   <div class="mvh-icon" id="fnMediaVerdictIcon">🚨</div>
                   <div class="mvh-text">
-                    <span class="mvh-label" id="fnMediaVerdictSub">Digital Manipulation &amp; Misinformation Detected</span>
-                    <h3 class="mvh-title" id="fnMediaVerdictTitle">Manipulated Headline Screenshot (Fabricated News)</h3>
+                    <span class="mvh-label" id="fnMediaVerdictSub">TAMPERED / FAKE PHOTO</span>
+                    <h3 class="mvh-title" id="fnMediaVerdictTitle">Altered News Headline Screenshot</h3>
                   </div>
                   <div class="mvh-badge">
                     <span class="badge-pill danger" id="fnMediaStatusPill">High Risk</span>
@@ -3130,18 +3125,18 @@
                 <div class="media-metrics-grid">
                   <div class="media-metric-box">
                     <div class="mmb-head">
-                      <span>Deepfake / Synthetic Score:</span>
+                      <span>Deepfake &amp; AI Risk:</span>
                       <strong class="mmb-score danger" id="fnDeepfakeScore">94.2% Risk</strong>
                     </div>
                     <div class="meter-bar-track">
                       <div class="meter-bar-fill fake-fill" id="fnDeepfakeBar" style="width: 94.2%;"></div>
                     </div>
-                    <p class="mmb-desc" id="fnDeepfakeDesc">Compression gradient mismatch &amp; typeface artifacting detected around headline banner.</p>
+                    <p class="mmb-desc" id="fnDeepfakeDesc">Digital tampering detected around text banner boundaries.</p>
                   </div>
 
                   <div class="media-metric-box">
                     <div class="mmb-head">
-                      <span>Social Media Reach Action:</span>
+                      <span>Allowed Social Feed Reach:</span>
                       <strong class="mmb-score danger" id="fnMediaReach">0.05x Throttled</strong>
                     </div>
                     <div class="meter-bar-track">
@@ -3154,8 +3149,8 @@
                 <!-- OCR Text Extraction & PAC Analysis -->
                 <div class="ocr-inspection-card">
                   <div class="ocr-card-head">
-                    <span class="ocr-title">Extracted In-Image Text (OCR Extraction):</span>
-                    <span class="ocr-badge" id="fnOcrPacBadge">PAC NLP: 97.4% Fake</span>
+                    <span class="ocr-title">Text Found in Image (Fact-Checked by AI):</span>
+                    <span class="ocr-badge" id="fnOcrPacBadge">AI Verdict: 97.4% Fake</span>
                   </div>
                   <div class="ocr-text-box" id="fnOcrTextContent">
                     "BREAKING: WHITE HOUSE ADMITS SECRET MOON BASE CONTROLS GLOBAL WEATHER AND TIDAL FREQUENCIES"
