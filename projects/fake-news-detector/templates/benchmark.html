@@ -232,48 +232,48 @@
   <script>
     const benchmarkData = {
       pac: {
-        title: 'Confusion Matrix: Passive Aggressive Classifier (PAC)',
+        title: 'Accuracy Breakdown: Passive Aggressive Classifier (Our AI)',
         accuracy: '96.08% Acc',
         badgeClass: 'safe',
         tn: '1,048',
         fp: '43',
         fn: '41',
         tp: '1,012',
-        theoryTitle: 'Why PAC Outperforms Static Estimators:',
-        theoryDesc: 'The Passive-Aggressive algorithm updates model weights only when an incoming sample incurs a non-zero hinge loss: L(w; (x, y)) = max(0, 1 - y * (w · x)). When correct, weights stay passive; when incorrect, weights update aggressively with minimal perturbation, allowing real-time online adaptation.'
+        theoryTitle: 'Why This AI Was Chosen:',
+        theoryDesc: 'The Passive Aggressive model only updates itself when it makes a mistake. If it gets a story right, it stays calm. If it gets one wrong, it quickly learns from it — making it perfect for catching new types of fake news without needing a full restart.'
       },
       linearsvc: {
-        title: 'Confusion Matrix: Linear Support Vector Classifier (LinearSVC)',
+        title: 'Accuracy Breakdown: Linear Support Vector Classifier (SVC)',
         accuracy: '94.12% Acc',
         badgeClass: 'safe',
         tn: '1,015',
         fp: '76',
         fn: '50',
         tp: '1,003',
-        theoryTitle: 'Linear Support Vector Classifier (LinearSVC):',
-        theoryDesc: 'Maximizes the geometric margin between reliable and unreliable hyperplanes using coordinate descent. While highly accurate (94.12%), it lacks the native online streaming update capability of PAC and requires full matrix recomputation.'
+        theoryTitle: 'How Linear SVC Works:',
+        theoryDesc: 'Finds the best dividing line between real and fake news. While very accurate (94.12%), it cannot adapt on the fly to new vocabulary and must be fully retrained from scratch when new fake news trends emerge.'
       },
       logreg: {
-        title: 'Confusion Matrix: Logistic Regression (L2 Regularized)',
+        title: 'Accuracy Breakdown: Logistic Regression',
         accuracy: '91.50% Acc',
         badgeClass: 'warn',
         tn: '988',
         fp: '103',
         fn: '79',
         tp: '974',
-        theoryTitle: 'Logistic Regression Analysis:',
-        theoryDesc: 'Optimizes cross-entropy log-loss. Performs reliably across high-frequency unigrams, but struggles with nuanced satirical phrasing and emerging vocabulary without periodic global retraining.'
+        theoryTitle: 'How Logistic Regression Works:',
+        theoryDesc: 'A classic statistics-based approach that works well for common headline patterns. However, it struggles with humor, satire, and new slang terms without being fully retrained regularly.'
       },
       mnb: {
-        title: 'Confusion Matrix: Multinomial Naive Bayes (MNB)',
+        title: 'Accuracy Breakdown: Naive Bayes (Word Probability Classifier)',
         accuracy: '88.42% Acc',
         badgeClass: 'danger',
         tn: '945',
         fp: '146',
         fn: '102',
         tp: '951',
-        theoryTitle: 'Multinomial Naive Bayes Analysis:',
-        theoryDesc: 'Assumes strict conditional independence between words given the class label. In reality, disinformation relies heavily on n-gram context and coordinated phrasing, violating the naive independence assumption and yielding lower recall.'
+        theoryTitle: 'How Naive Bayes Works:',
+        theoryDesc: 'Counts how often each word appears in real vs. fake articles and uses those probabilities to guess. Simple and fast, but misses context — fake news often uses combinations of ordinary words in deceptive patterns, which this model cannot detect well.'
       }
     };
 
