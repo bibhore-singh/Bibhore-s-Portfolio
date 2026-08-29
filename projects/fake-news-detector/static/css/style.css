@@ -1865,5 +1865,126 @@ body {
   }
 }
 
+/* ══════════════════════════════════════════════════════
+   GLOBAL INTERACTIVE ENHANCEMENTS — added for full
+   interactivity upgrade across all FAKEBUSTER pages
+   ══════════════════════════════════════════════════════ */
+
+/* Smooth page entrance */
+body { animation: pageFadeIn 0.4s ease; }
+@keyframes pageFadeIn { from{opacity:0} to{opacity:1} }
+
+/* Ripple effect on buttons */
+.btn { position: relative; overflow: hidden; }
+.btn::after {
+  content: ''; position: absolute;
+  width: 100px; height: 100px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  transform: scale(0); opacity: 1;
+  pointer-events: none;
+  transition: transform 0.5s ease, opacity 0.5s ease;
+}
+.btn:active::after { transform: scale(4); opacity: 0; transition: 0s; }
+
+/* Nav link hover underline animation */
+.nav-links a { position: relative; }
+.nav-links a:not(.btn)::after {
+  content: ''; position: absolute;
+  bottom: -3px; left: 0; width: 0; height: 2px;
+  background: var(--primary);
+  transition: width 0.25s ease;
+  border-radius: 2px;
+}
+.nav-links a:not(.btn):hover::after,
+.nav-links a.active-link::after { width: 100%; }
+
+/* Card hover shimmer */
+.studio-card, .box-card, .pac-card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.studio-card:hover, .box-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 60px rgba(99, 102, 241, 0.18);
+}
+
+/* Input focus ring animation */
+input, textarea, select {
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+input:focus, textarea:focus {
+  box-shadow: 0 0 0 3px rgba(99,102,241,0.18);
+}
+
+/* Status dot pulse */
+.status-dot {
+  display: inline-block;
+  width: 8px; height: 8px;
+  background: var(--accent-emerald);
+  border-radius: 50%;
+  animation: statusPulse 2s ease-in-out infinite;
+}
+@keyframes statusPulse {
+  0%,100% { box-shadow: 0 0 0 0 rgba(16,185,129,0.5); }
+  50%     { box-shadow: 0 0 0 6px rgba(16,185,129,0); }
+}
+
+/* Section badge hover */
+.section-badge {
+  transition: background 0.2s, color 0.2s;
+  cursor: default;
+}
+.section-badge:hover {
+  background: rgba(99,102,241,0.25);
+  color: var(--text-primary);
+}
+
+/* Active link indicator */
+.active-link { color: var(--primary) !important; font-weight: 600; }
+
+/* Tooltip arrow */
+[data-tip] { position: relative; cursor: help; }
+[data-tip]::before {
+  content: '';
+  position: absolute;
+  bottom: calc(100% + 3px); left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: #1e293b;
+  opacity: 0; pointer-events: none;
+  transition: opacity 0.2s;
+}
+[data-tip]::after {
+  content: attr(data-tip);
+  position: absolute;
+  bottom: calc(100% + 13px); left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 8px;
+  padding: 6px 12px;
+  font-size: 0.73rem;
+  white-space: nowrap;
+  pointer-events: none;
+  opacity: 0; transition: opacity 0.2s;
+  z-index: 50; color: var(--text-primary);
+  font-family: var(--font-main);
+}
+[data-tip]:hover::before,
+[data-tip]:hover::after { opacity: 1; }
+
+/* Verdict boxes shimmer border */
+.fake-verdict { border: 1px solid rgba(244,63,94,0.45); }
+.real-verdict { border: 1px solid rgba(16,185,129,0.45); }
+
+/* Smooth meter fill */
+.meter-fill {
+  transition: width 1.2s cubic-bezier(0.4,0,0.2,1) !important;
+}
+
+/* Footer hover */
+.site-footer strong { color: var(--accent-cyan); }
+
+
 
 

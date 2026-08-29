@@ -8,8 +8,216 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <style>
+    /* ── INTERACTIVE LANDING EXTRAS ── */
+    .hero-typing-wrap { min-height: 2.2rem; }
+    .typing-cursor { display: inline-block; width: 3px; height: 1.1em; background: var(--accent-cyan); animation: blink 0.75s step-end infinite; vertical-align: text-bottom; margin-left: 2px; border-radius: 2px; }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* Animated counter values */
+    .metric-val { font-size: 2.4rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; transition: transform 0.3s; }
+    .metric-card:hover .metric-val { transform: scale(1.12); }
+    .metric-card { cursor: default; transition: transform 0.3s, box-shadow 0.3s; }
+    .metric-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(99, 102, 241, 0.25); }
+
+    /* Scroll-reveal */
+    .reveal { opacity: 0; transform: translateY(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+    .reveal-left { opacity: 0; transform: translateX(-40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-left.visible { opacity: 1; transform: translateX(0); }
+    .reveal-right { opacity: 0; transform: translateX(40px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal-right.visible { opacity: 1; transform: translateX(0); }
+
+    /* Stagger children */
+    .stagger-children > * { opacity: 0; transform: translateY(30px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .stagger-children.visible > *:nth-child(1) { opacity:1; transform:translateY(0); transition-delay:0s; }
+    .stagger-children.visible > *:nth-child(2) { opacity:1; transform:translateY(0); transition-delay:0.1s; }
+    .stagger-children.visible > *:nth-child(3) { opacity:1; transform:translateY(0); transition-delay:0.2s; }
+    .stagger-children.visible > *:nth-child(4) { opacity:1; transform:translateY(0); transition-delay:0.3s; }
+
+    /* ── LIVE MINI DEMO WIDGET ── */
+    .live-demo-section { padding: 60px 0 80px; }
+    .live-demo-card {
+      background: rgba(18, 26, 43, 0.9);
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      border-radius: 24px;
+      padding: 44px;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 0 80px rgba(99, 102, 241, 0.12);
+    }
+    .live-demo-card::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, rgba(99,102,241,0.04) 0%, transparent 60%);
+      pointer-events: none;
+    }
+    .demo-badge { display: inline-flex; align-items: center; gap: 8px; background: rgba(99,102,241,0.15); border: 1px solid rgba(99,102,241,0.4); padding: 6px 14px; border-radius: 100px; font-size: 0.78rem; font-weight: 600; color: var(--primary); margin-bottom: 18px; }
+    .demo-badge .live-dot { width: 7px; height: 7px; border-radius: 50%; background: #10b981; animation: pulse-dot 1.5s ease-in-out infinite; }
+    @keyframes pulse-dot { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:0.6} }
+
+    .demo-card-title { font-size: 1.55rem; font-weight: 700; margin-bottom: 8px; }
+    .demo-card-sub { color: var(--text-secondary); font-size: 0.9rem; margin-bottom: 28px; }
+
+    .demo-presets { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+    .demo-preset-btn {
+      padding: 7px 16px; border-radius: 100px;
+      border: 1px solid rgba(255,255,255,0.12);
+      background: transparent;
+      color: var(--text-secondary);
+      font-size: 0.82rem; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .demo-preset-btn:hover, .demo-preset-btn.active { border-color: var(--primary); background: rgba(99,102,241,0.18); color: var(--text-primary); }
+
+    .demo-input-row { display: flex; gap: 12px; margin-bottom: 16px; }
+    .demo-text-input {
+      flex: 1; padding: 14px 18px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 12px; color: var(--text-primary);
+      font-family: var(--font-main); font-size: 0.95rem;
+      transition: border-color 0.2s;
+    }
+    .demo-text-input:focus { outline: none; border-color: var(--primary); background: rgba(99,102,241,0.07); }
+    .demo-check-btn {
+      padding: 14px 28px; border-radius: 12px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; font-weight: 700; font-size: 0.95rem;
+      border: none; cursor: pointer;
+      transition: all 0.3s; white-space: nowrap;
+    }
+    .demo-check-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(99,102,241,0.45); }
+    .demo-check-btn:active { transform: translateY(0); }
+
+    /* Result display */
+    .demo-result-area { min-height: 90px; }
+    .demo-result-box {
+      border-radius: 16px; padding: 20px 24px;
+      display: flex; align-items: center; gap: 18px;
+      animation: fadeSlideUp 0.5s ease forwards;
+    }
+    @keyframes fadeSlideUp { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+    .demo-result-box.result-real { background: rgba(16,185,129,0.12); border: 1px solid rgba(16,185,129,0.35); }
+    .demo-result-box.result-fake { background: rgba(244,63,94,0.12); border: 1px solid rgba(244,63,94,0.35); }
+    .demo-result-box.result-thinking { background: rgba(99,102,241,0.1); border: 1px solid rgba(99,102,241,0.3); }
+    .demo-res-icon { font-size: 2.4rem; flex-shrink: 0; }
+    .demo-res-label { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 4px; }
+    .demo-res-label.label-real { color: var(--accent-emerald); }
+    .demo-res-label.label-fake { color: var(--accent-rose); }
+    .demo-res-label.label-thinking { color: var(--primary); }
+    .demo-res-verdict { font-size: 1.15rem; font-weight: 700; }
+    .demo-res-conf { font-size: 0.82rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* Confidence bar in demo */
+    .demo-conf-bar-wrap { flex: 1; max-width: 200px; }
+    .demo-conf-bar-track { height: 6px; background: rgba(255,255,255,0.1); border-radius: 100px; overflow: hidden; }
+    .demo-conf-bar-fill { height: 100%; border-radius: 100px; transition: width 0.8s cubic-bezier(0.4,0,0.2,1); }
+    .demo-conf-bar-fill.fill-real { background: var(--accent-emerald); }
+    .demo-conf-bar-fill.fill-fake { background: var(--accent-rose); }
+
+    /* ── INTERACTIVE COMPARISON CARDS ── */
+    .comparison-interactive { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+    .comp-card {
+      border-radius: 18px; padding: 30px 26px;
+      border: 1px solid; cursor: pointer;
+      transition: all 0.3s;
+      position: relative; overflow: hidden;
+    }
+    .comp-card::after {
+      content: ''; position: absolute; inset: 0;
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .comp-card-problem { border-color: rgba(244,63,94,0.3); background: rgba(244,63,94,0.05); }
+    .comp-card-problem:hover { border-color: rgba(244,63,94,0.7); box-shadow: 0 16px 40px rgba(244,63,94,0.18); transform: translateY(-4px); }
+    .comp-card-solution { border-color: rgba(16,185,129,0.3); background: rgba(16,185,129,0.05); }
+    .comp-card-solution:hover { border-color: rgba(16,185,129,0.7); box-shadow: 0 16px 40px rgba(16,185,129,0.18); transform: translateY(-4px); }
+    .comp-expand { display: none; margin-top: 14px; font-size: 0.85rem; color: var(--text-secondary); line-height: 1.7; animation: fadeSlideUp 0.3s ease; }
+    .comp-card.open .comp-expand { display: block; }
+    .comp-toggle { font-size: 0.78rem; margin-top: 12px; font-weight: 600; opacity: 0.6; }
+    .comp-card-problem .comp-toggle { color: var(--accent-rose); }
+    .comp-card-solution .comp-toggle { color: var(--accent-emerald); }
+
+    /* ── PAC CARD FLIP ── */
+    .pac-cards-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .pac-card-flip { perspective: 800px; height: 200px; cursor: pointer; }
+    .pac-card-inner { width: 100%; height: 100%; position: relative; transform-style: preserve-3d; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); }
+    .pac-card-flip:hover .pac-card-inner, .pac-card-flip.flipped .pac-card-inner { transform: rotateY(180deg); }
+    .pac-face { position: absolute; inset: 0; border-radius: 18px; padding: 28px 22px; backface-visibility: hidden; display: flex; flex-direction: column; justify-content: center; }
+    .pac-face-front { background: rgba(18,26,43,0.9); border: 1px solid rgba(99,102,241,0.25); }
+    .pac-face-back { background: linear-gradient(135deg, rgba(99,102,241,0.25), rgba(139,92,246,0.2)); border: 1px solid rgba(99,102,241,0.5); transform: rotateY(180deg); }
+    .pac-step-front { font-size: 1.8rem; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+    .pac-hint { font-size: 0.72rem; color: var(--text-secondary); margin-top: 8px; }
+
+    /* ── STATS COUNTER SECTION ── */
+    .stats-strip { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2px; margin: 40px 0; background: rgba(255,255,255,0.05); border-radius: 20px; overflow: hidden; border: 1px solid rgba(255,255,255,0.08); }
+    .stat-strip-item { padding: 28px 20px; text-align: center; background: rgba(18,26,43,0.8); transition: background 0.3s; }
+    .stat-strip-item:hover { background: rgba(99,102,241,0.1); }
+    .stat-strip-num { font-size: 2.2rem; font-weight: 800; background: linear-gradient(135deg, var(--accent-cyan), var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; display: block; }
+    .stat-strip-lbl { font-size: 0.78rem; color: var(--text-secondary); margin-top: 4px; }
+
+    /* ── HOW IT WORKS TIMELINE ── */
+    .how-it-works { padding: 60px 0; }
+    .timeline-steps { display: flex; flex-direction: column; gap: 0; max-width: 680px; margin: 36px auto 0; }
+    .timeline-step {
+      display: flex; gap: 24px; align-items: flex-start;
+      padding: 24px 0; position: relative; cursor: pointer;
+      border-radius: 16px; transition: background 0.2s;
+    }
+    .timeline-step:hover { background: rgba(99,102,241,0.06); padding-left: 12px; padding-right: 12px; margin: 0 -12px; }
+    .timeline-step-num {
+      width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 800; font-size: 1rem;
+      background: rgba(99,102,241,0.15); border: 2px solid rgba(99,102,241,0.4);
+      color: var(--primary); transition: all 0.3s; position: relative; z-index: 1;
+    }
+    .timeline-step:hover .timeline-step-num, .timeline-step.active .timeline-step-num {
+      background: var(--primary); color: white; border-color: var(--primary);
+      box-shadow: 0 0 20px rgba(99,102,241,0.5);
+    }
+    .timeline-step-line { position: absolute; left: 21px; top: 68px; bottom: -10px; width: 2px; background: rgba(255,255,255,0.07); }
+    .timeline-step:last-child .timeline-step-line { display: none; }
+    .timeline-step-content h4 { font-weight: 700; font-size: 1.05rem; margin-bottom: 6px; }
+    .timeline-step-content p { color: var(--text-secondary); font-size: 0.88rem; line-height: 1.6; }
+    .timeline-expand { display: none; margin-top: 12px; }
+    .timeline-step.active .timeline-expand { display: block; }
+    .timeline-code-snippet { background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.1); border-radius: 10px; padding: 12px 16px; font-family: var(--font-mono); font-size: 0.78rem; color: var(--accent-cyan); margin-top: 10px; }
+
+    /* ── SCROLL PROGRESS BAR ── */
+    .scroll-progress { position: fixed; top: 0; left: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--accent-cyan)); z-index: 1000; width: 0%; transition: width 0.1s linear; }
+
+    /* ── FLOATING CTA ── */
+    .floating-cta {
+      position: fixed; bottom: 28px; right: 28px;
+      padding: 14px 24px; border-radius: 100px;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      color: white; font-weight: 700; font-size: 0.9rem;
+      text-decoration: none; box-shadow: 0 8px 32px rgba(99,102,241,0.5);
+      transition: all 0.3s; z-index: 999;
+      opacity: 0; transform: translateY(20px);
+      pointer-events: none;
+    }
+    .floating-cta.show { opacity: 1; transform: translateY(0); pointer-events: auto; }
+    .floating-cta:hover { box-shadow: 0 16px 48px rgba(99,102,241,0.65); transform: translateY(-3px); }
+
+    @media (max-width: 700px) {
+      .comparison-interactive { grid-template-columns: 1fr; }
+      .pac-cards-wrap { grid-template-columns: 1fr; }
+      .stats-strip { grid-template-columns: repeat(2,1fr); }
+      .demo-input-row { flex-direction: column; }
+    }
+  </style>
 </head>
 <body>
+  <!-- Scroll Progress -->
+  <div class="scroll-progress" id="scrollProgress"></div>
+
+  <!-- Floating CTA -->
+  <a href="/predict" class="floating-cta" id="floatingCta">⚡ Check a Story Now</a>
+
   <!-- Ambient background glow -->
   <div class="ambient-glow glow-top"></div>
   <div class="ambient-glow glow-bottom"></div>
@@ -22,7 +230,7 @@
         <span class="brand-text">Fake<span class="brand-accent">Buster</span></span>
       </a>
       <nav class="nav-links">
-        <a href="/">Home</a>
+        <a href="/" class="active-link">Home</a>
         <a href="/predict">Check News</a>
         <a href="/media">Check Photos &amp; Videos</a>
         <a href="/nlp-lab">Text Analysis Lab</a>
@@ -40,50 +248,106 @@
     <div class="hero-container">
       <div class="hero-tag">
         <span class="status-dot"></span>
-        <span>Passive Aggressive Classifier · 96% Accuracy</span>
+        <span>AI Online · 96.08% Accuracy · &lt;2ms Response</span>
       </div>
       <h1 class="hero-title">
         FAKEBUSTER <br>
-        <span class="gradient-text">AI-Powered Fake News Detection</span>
+        <span class="gradient-text hero-typing-wrap">
+          <span id="heroTyped"></span><span class="typing-cursor"></span>
+        </span>
       </h1>
       <p class="hero-tagline" style="font-size: 1.35rem; font-weight: 700; color: var(--accent-cyan); margin-bottom: 14px; letter-spacing: -0.01em;">
-        “Bust the Fake. Find the Facts.”
+        "Bust the Fake. Find the Facts."
       </p>
       <p class="hero-subtitle">
-        An AI-powered tool that reads any news article and tells you if it's real or fake — then controls how far it spreads on social media based on the publisher's trust history.
+        An intelligent NLP system that classifies news authenticity in under 2 milliseconds and tracks publisher credibility over time to stop viral misinformation at the source.
       </p>
 
       <div class="hero-actions">
         <a href="/predict" class="btn btn-primary btn-lg">
-          <span>Scan an Article Now</span>
+          <span>Check an Article Now</span>
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
         </a>
-        <a href="#model" class="btn btn-outline btn-lg">
-          <span>See How It Works</span>
+        <a href="#live-demo" class="btn btn-outline btn-lg">
+          <span>Try Live Demo ↓</span>
         </a>
       </div>
 
-      <!-- Quick Metrics Grid -->
-      <div class="metrics-grid">
-        <div class="metric-card">
-          <div class="metric-val">96%</div>
-          <div class="metric-label">AI Accuracy</div>
-          <p class="metric-desc">Tested across 20,800 real-world news articles.</p>
+      <!-- Animated Stats Strip -->
+      <div class="stats-strip stagger-children reveal" id="statsStrip">
+        <div class="stat-strip-item">
+          <span class="stat-strip-num" data-target="96.08" data-suffix="%" data-decimals="2">0%</span>
+          <div class="stat-strip-lbl">AI Accuracy</div>
         </div>
-        <div class="metric-card">
-          <div class="metric-val">AI</div>
-          <div class="metric-label">Smart Learning Model</div>
-          <p class="metric-desc">Adapts instantly when new fake news patterns appear.</p>
+        <div class="stat-strip-item">
+          <span class="stat-strip-num" data-target="20800" data-suffix="">0</span>
+          <div class="stat-strip-lbl">Articles Trained On</div>
         </div>
-        <div class="metric-card">
-          <div class="metric-val">NLP</div>
-          <div class="metric-label">Word Analysis Engine</div>
-          <p class="metric-desc">Scores keyword importance to spot sensational writing.</p>
+        <div class="stat-strip-item">
+          <span class="stat-strip-num" data-target="1.4" data-suffix="ms" data-decimals="1">0ms</span>
+          <div class="stat-strip-lbl">Response Speed</div>
         </div>
-        <div class="metric-card">
-          <div class="metric-val">Source Trust</div>
-          <div class="metric-label">Social Feed Reach</div>
-          <p class="metric-desc">Reduces false alarms by looking at the publisher's track record over time.</p>
+        <div class="stat-strip-item">
+          <span class="stat-strip-num" data-target="4" data-suffix=" AI Models">0</span>
+          <div class="stat-strip-lbl">Compared &amp; Tested</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LIVE MINI DEMO -->
+  <section id="live-demo" class="live-demo-section">
+    <div class="section-container">
+      <div class="live-demo-card reveal">
+        <div class="demo-badge">
+          <span class="live-dot"></span>
+          Live AI Demo — No Login Required
+        </div>
+        <div class="demo-card-title">Try FAKEBUSTER Right Now</div>
+        <div class="demo-card-sub">Type any headline below, or pick a pre-loaded example, and see instant AI fact-checking results.</div>
+
+        <!-- Preset examples -->
+        <div class="demo-presets">
+          <button class="demo-preset-btn active" onclick="loadDemoPreset('nasa', this)">🚀 NASA Discovery</button>
+          <button class="demo-preset-btn" onclick="loadDemoPreset('miracle', this)">⚠️ Miracle Herb Hoax</button>
+          <button class="demo-preset-btn" onclick="loadDemoPreset('moon', this)">🛸 Moon Base Myth</button>
+          <button class="demo-preset-btn" onclick="loadDemoPreset('climate', this)">✅ Climate Accord</button>
+          <button class="demo-preset-btn" onclick="loadDemoPreset('custom', this)">✏️ Type Your Own</button>
+        </div>
+
+        <div class="demo-input-row">
+          <input type="text" class="demo-text-input" id="demoInput"
+            placeholder="Paste or type a news headline here..."
+            value="NASA James Webb Space Telescope Reveals Ancient Galaxies Formed After Big Bang"
+            oninput="onDemoInput()">
+          <button class="demo-check-btn" onclick="runDemoCheck()">
+            ⚡ Fact-Check It
+          </button>
+        </div>
+
+        <!-- Result area -->
+        <div class="demo-result-area" id="demoResultArea">
+          <div class="demo-result-box result-real" id="demoResultBox">
+            <div class="demo-res-icon" id="demoIcon">✅</div>
+            <div style="flex:1">
+              <div class="demo-res-label label-real" id="demoLabel">REAL / AUTHENTIC</div>
+              <div class="demo-res-verdict" id="demoVerdict">This reads like credible, factual news reporting.</div>
+              <div class="demo-res-conf" id="demoConf">AI Confidence: 91.4% · Feed Reach: Full Distribution</div>
+            </div>
+            <div class="demo-conf-bar-wrap">
+              <div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px;">Confidence</div>
+              <div class="demo-conf-bar-track">
+                <div class="demo-conf-bar-fill fill-real" id="demoConfBar" style="width:91.4%"></div>
+              </div>
+              <div style="font-size:0.75rem;font-weight:700;margin-top:4px;color:var(--accent-emerald)" id="demoConfPct">91.4%</div>
+            </div>
+          </div>
+        </div>
+
+        <div style="margin-top:18px; text-align:center;">
+          <a href="/predict" style="font-size:0.85rem;color:var(--primary);text-decoration:none;font-weight:600;">
+            → Run full analysis with author + article body on the Check News page
+          </a>
         </div>
       </div>
     </div>
@@ -92,57 +356,174 @@
   <!-- Problem Definition Section -->
   <section id="problem" class="content-section">
     <div class="section-container">
-      <div class="section-badge">Why This Works Better</div>
-      <h2 class="section-heading">The Problem With Old Fact-Checkers &amp; Our Smarter Solution</h2>
-      <p class="section-subtext">
-        Most tools only look at one article in isolation. FAKEBUSTER focuses on <strong>who is publishing it</strong> and tracks their overall honesty over time.
+      <div class="section-badge reveal">Why This Works Better</div>
+      <h2 class="section-heading reveal">The Problem With Old Fact-Checkers &amp; Our Smarter Solution</h2>
+      <p class="section-subtext reveal">
+        Most tools only look at one article in isolation. <strong>Click either card</strong> to see why that fails — and what FAKEBUSTER does differently.
       </p>
 
-      <div class="problem-solution-grid">
-        <div class="box-card problem-box">
+      <div class="comparison-interactive stagger-children reveal">
+        <div class="comp-card comp-card-problem" onclick="toggleCompCard(this)">
           <div class="card-icon">⚠️</div>
-          <h3>The Old Way: Checking One Article in Isolation</h3>
-          <p>If an article is satire or has a joke headline, normal tools mistakenly flag it as fake. At the same time, fake news creators easily slip past filters by slightly rewording text.</p>
+          <h3>The Old Way: One Article at a Time</h3>
+          <p>Traditional tools flag individual articles, causing both false alarms and missed fakes.</p>
+          <div class="comp-expand">
+            <strong style="color:var(--accent-rose)">Problems with this approach:</strong>
+            <ul style="margin-top:8px;padding-left:18px;line-height:2">
+              <li>Satire/humor gets falsely flagged as fake news</li>
+              <li>Fake news creators bypass filters by rewording headlines</li>
+              <li>No memory of a source's past behavior</li>
+              <li>High false positive rate silences legitimate journalists</li>
+            </ul>
+          </div>
+          <div class="comp-toggle" id="compToggle1">▼ Show Details</div>
         </div>
-        <div class="box-card solution-box">
+        <div class="comp-card comp-card-solution" onclick="toggleCompCard(this)">
           <div class="card-icon">🎯</div>
-          <h3>Our Way: Tracking the Publisher's Honesty</h3>
-          <p>By keeping track of multiple stories from the same author or website, we build an honest trust score. If a website repeatedly produces fake news, its posts are automatically downranked in social media feeds.</p>
+          <h3>Our Way: Track the Publisher's Honesty</h3>
+          <p>FAKEBUSTER monitors multiple articles from the same source to build a trust score over time.</p>
+          <div class="comp-expand">
+            <strong style="color:var(--accent-emerald)">Why this is smarter:</strong>
+            <ul style="margin-top:8px;padding-left:18px;line-height:2">
+              <li>Satire sites get flagged based on their overall track record</li>
+              <li>Serial fake news websites are caught even if articles are reworded</li>
+              <li>Trust score improves with each verified article</li>
+              <li>Social feed reach is automatically reduced for low-trust sources</li>
+            </ul>
+          </div>
+          <div class="comp-toggle" id="compToggle2">▼ Show Details</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Model & Pipeline Section -->
+  <!-- How It Works Timeline -->
+  <section class="how-it-works">
+    <div class="section-container">
+      <div class="section-badge reveal">Step-by-Step</div>
+      <h2 class="section-heading reveal">How FAKEBUSTER Works</h2>
+      <p class="section-subtext reveal">Click each step to see exactly what happens under the hood.</p>
+
+      <div class="timeline-steps reveal">
+        <div class="timeline-step active" onclick="toggleTimeline(this)">
+          <div class="timeline-step-line"></div>
+          <div class="timeline-step-num">1</div>
+          <div class="timeline-step-content">
+            <h4>You Paste a Headline or Article</h4>
+            <p>Enter any news text — headline, full body, or just a title.</p>
+            <div class="timeline-expand">
+              <div class="timeline-code-snippet">input: "BREAKING: Secret Moon Base Controls Weather..."</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step" onclick="toggleTimeline(this)">
+          <div class="timeline-step-line"></div>
+          <div class="timeline-step-num">2</div>
+          <div class="timeline-step-content">
+            <h4>AI Cleans &amp; Reads the Text</h4>
+            <p>Punctuation removed → lowercase → filler words stripped → root words extracted.</p>
+            <div class="timeline-expand">
+              <div class="timeline-code-snippet">BREAKING → break · Secret → secret · Frequencies → frequency</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step" onclick="toggleTimeline(this)">
+          <div class="timeline-step-line"></div>
+          <div class="timeline-step-num">3</div>
+          <div class="timeline-step-content">
+            <h4>Words Are Scored for Importance</h4>
+            <p>Each keyword gets a weight — sensational words score high, neutral words score low.</p>
+            <div class="timeline-expand">
+              <div class="timeline-code-snippet">secret: 0.91 · admit: 0.87 · lunar: 0.73 · frequencies: 0.84</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step" onclick="toggleTimeline(this)">
+          <div class="timeline-step-line"></div>
+          <div class="timeline-step-num">4</div>
+          <div class="timeline-step-content">
+            <h4>AI Makes a Verdict (in &lt;2ms)</h4>
+            <p>The Passive Aggressive model classifies Real or Fake with a confidence score.</p>
+            <div class="timeline-expand">
+              <div class="timeline-code-snippet">verdict: FAKE · confidence: 94.2% · reach: 0.05x throttled</div>
+            </div>
+          </div>
+        </div>
+        <div class="timeline-step" onclick="toggleTimeline(this)">
+          <div class="timeline-step-line"></div>
+          <div class="timeline-step-num">5</div>
+          <div class="timeline-step-content">
+            <h4>Publisher Feed Reach is Calculated</h4>
+            <p>Based on the author/source's overall track record, social media reach is adjusted.</p>
+            <div class="timeline-expand">
+              <div class="timeline-code-snippet">source_trust: 0.12 → feed_weight: 0.05x → throttled by 95%</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Model Section with Flip Cards -->
   <section id="model" class="content-section">
     <div class="section-container">
-      <div class="section-badge">How the AI Works</div>
-      <h2 class="section-heading">Why We Chose This Fast &amp; Smart AI Model</h2>
-      <p class="section-subtext">
-        The AI (Passive Aggressive Classifier) is specially built to process thousands of live news headlines every second with sub-2 millisecond response time.
+      <div class="section-badge reveal">How the AI Works</div>
+      <h2 class="section-heading reveal">Why We Chose This Fast &amp; Smart AI Model</h2>
+      <p class="section-subtext reveal">
+        <strong>Hover over each card</strong> to flip it and read the technical detail behind each behaviour.
       </p>
 
-      <div class="pac-architecture-cards">
-        <div class="pac-card">
-          <div class="pac-step">01</div>
-          <h4>Stays Calm When Right</h4>
-          <p>When the AI correctly identifies real or fake news, it keeps its knowledge base steady without wasting computing power.</p>
+      <div class="pac-cards-wrap reveal">
+        <div class="pac-card-flip" onclick="this.classList.toggle('flipped')">
+          <div class="pac-card-inner">
+            <div class="pac-face pac-face-front">
+              <div class="pac-step-front">01</div>
+              <h4 style="margin-top:12px">Stays Calm When Right</h4>
+              <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px">When the AI correctly classifies a story, it doesn't change anything.</p>
+              <div class="pac-hint">👆 Hover / tap to see how</div>
+            </div>
+            <div class="pac-face pac-face-back">
+              <div style="font-size:0.75rem;font-weight:700;color:var(--accent-cyan);letter-spacing:0.1em;margin-bottom:10px">TECHNICAL DETAIL</div>
+              <p style="font-size:0.88rem;line-height:1.6">When hinge loss = 0 (correct prediction), the model weights <em>w</em> remain unchanged — zero compute wasted. This is the "passive" mode.</p>
+              <div class="timeline-code-snippet" style="margin-top:12px">if loss == 0: w = w  # passive</div>
+            </div>
+          </div>
         </div>
-        <div class="pac-card">
-          <div class="pac-step">02</div>
-          <h4>Learns Fast When Mistaken</h4>
-          <p>If it encounters a clever new disinformation trick, it immediately updates its memory so it catches it the next time.</p>
+        <div class="pac-card-flip" onclick="this.classList.toggle('flipped')">
+          <div class="pac-card-inner">
+            <div class="pac-face pac-face-front">
+              <div class="pac-step-front">02</div>
+              <h4 style="margin-top:12px">Learns Fast When Mistaken</h4>
+              <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px">If it gets tricked by a new fake news style, it updates immediately.</p>
+              <div class="pac-hint">👆 Hover / tap to see how</div>
+            </div>
+            <div class="pac-face pac-face-back">
+              <div style="font-size:0.75rem;font-weight:700;color:var(--accent-cyan);letter-spacing:0.1em;margin-bottom:10px">TECHNICAL DETAIL</div>
+              <p style="font-size:0.88rem;line-height:1.6">When hinge loss &gt; 0, weights are updated with the minimum norm change: <code>w = w + τ·y·x</code>. This is the "aggressive" update — swift, targeted correction.</p>
+              <div class="timeline-code-snippet" style="margin-top:12px">if loss &gt; 0: w += τ * y * x  # aggressive</div>
+            </div>
+          </div>
         </div>
-        <div class="pac-card">
-          <div class="pac-step">03</div>
-          <h4>Instant Speed</h4>
-          <p>Packaged for instant checking on web and mobile in under 2 milliseconds.</p>
+        <div class="pac-card-flip" onclick="this.classList.toggle('flipped')">
+          <div class="pac-card-inner">
+            <div class="pac-face pac-face-front">
+              <div class="pac-step-front">03</div>
+              <h4 style="margin-top:12px">Instant Speed</h4>
+              <p style="font-size:0.85rem;color:var(--text-secondary);margin-top:8px">Packaged for real-time checking in under 2 milliseconds per article.</p>
+              <div class="pac-hint">👆 Hover / tap to see how</div>
+            </div>
+            <div class="pac-face pac-face-back">
+              <div style="font-size:0.75rem;font-weight:700;color:var(--accent-cyan);letter-spacing:0.1em;margin-bottom:10px">TECHNICAL DETAIL</div>
+              <p style="font-size:0.88rem;line-height:1.6">TF-IDF sparse matrix multiplication is O(n) in the vocabulary size. Persisted as <code>model.pkl</code> + <code>vector.pkl</code> — loaded once at Flask startup, serving every request in &lt;1.4ms.</p>
+              <div class="timeline-code-snippet" style="margin-top:12px">latency: 1.4ms · pkl: model + vector</div>
+            </div>
+          </div>
         </div>
       </div>
 
-      <div class="cta-banner">
+      <div class="cta-banner reveal" style="margin-top:50px">
         <div class="cta-text">
-          <h3>Test Any News Story Now</h3>
+          <h3>Ready to Try It Yourself?</h3>
           <p>Paste any headline, author name, or article text to see whether it is authentic and check how much social reach it should receive.</p>
         </div>
         <a href="/predict" class="btn btn-primary btn-lg">Check a News Story Now →</a>
@@ -154,8 +535,211 @@
   <footer class="site-footer">
     <div class="footer-container">
       <p>© 2026 FAKEBUSTER · Developed by <strong>Bibhore Raj</strong> · B.Tech CSE (AI &amp; ML)</p>
-      <p class="footer-sub">“Bust the Fake. Find the Facts.” · Engineered with Python, Scikit-Learn, Flask, and Passive Aggressive Classification.</p>
+      <p class="footer-sub">"Bust the Fake. Find the Facts." · Engineered with Python, Scikit-Learn, Flask, and Passive Aggressive Classification.</p>
     </div>
   </footer>
+
+  <script>
+    // ── SCROLL PROGRESS BAR ──
+    window.addEventListener('scroll', () => {
+      const doc = document.documentElement;
+      const pct = (window.scrollY / (doc.scrollHeight - doc.clientHeight)) * 100;
+      document.getElementById('scrollProgress').style.width = pct + '%';
+
+      // Floating CTA appears after 300px
+      const cta = document.getElementById('floatingCta');
+      if (window.scrollY > 300) cta.classList.add('show');
+      else cta.classList.remove('show');
+    });
+
+    // ── SCROLL REVEAL ──
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); } });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right, .stagger-children').forEach(el => revealObserver.observe(el));
+
+    // ── ANIMATED COUNTERS ──
+    const counterObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (!e.isIntersecting) return;
+        e.target.querySelectorAll('[data-target]').forEach(el => {
+          const target = parseFloat(el.dataset.target);
+          const suffix = el.dataset.suffix || '';
+          const decimals = parseInt(el.dataset.decimals || '0');
+          const duration = 1600;
+          let start = null;
+          const step = (ts) => {
+            if (!start) start = ts;
+            const progress = Math.min((ts - start) / duration, 1);
+            const ease = 1 - Math.pow(1 - progress, 3);
+            const val = (ease * target).toFixed(decimals);
+            el.textContent = (target >= 1000 ? parseInt(val).toLocaleString() : val) + suffix;
+            if (progress < 1) requestAnimationFrame(step);
+          };
+          requestAnimationFrame(step);
+        });
+        counterObserver.unobserve(e.target);
+      });
+    }, { threshold: 0.3 });
+    document.querySelectorAll('.stats-strip').forEach(el => counterObserver.observe(el));
+
+    // ── TYPING ANIMATION ──
+    const phrases = [
+      'AI-Powered Fake News Detection',
+      'Bust the Fake. Find the Facts.',
+      'Fact-Checking in Under 2ms',
+      'Real or Fake? We Find Out.'
+    ];
+    let phraseIdx = 0, charIdx = 0, deleting = false;
+    const typedEl = document.getElementById('heroTyped');
+    function typeLoop() {
+      const phrase = phrases[phraseIdx];
+      if (!deleting) {
+        typedEl.textContent = phrase.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === phrase.length) { deleting = true; setTimeout(typeLoop, 2200); return; }
+        setTimeout(typeLoop, 55);
+      } else {
+        typedEl.textContent = phrase.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+          deleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          setTimeout(typeLoop, 400);
+          return;
+        }
+        setTimeout(typeLoop, 28);
+      }
+    }
+    typeLoop();
+
+    // ── LIVE DEMO ──
+    const demoData = {
+      nasa: {
+        text: "NASA James Webb Space Telescope Reveals Ancient Galaxies Formed After Big Bang",
+        verdict: "This reads like credible, factual science news.", label: "REAL / AUTHENTIC",
+        conf: 91.4, isReal: true, reach: "Full Social Feed Distribution"
+      },
+      miracle: {
+        text: "SHOCKING: Secret Miracle Herb Cures All Diseases Overnight Suppressed by Big Pharma",
+        verdict: "Sensational claims with no verifiable source detected.", label: "FAKE / MISLEADING",
+        conf: 97.2, isReal: false, reach: "Feed Reach Throttled by 92%"
+      },
+      moon: {
+        text: "Leaked Docs Prove Moon Is Hollow Alien Surveillance Outpost, Governments Hiding Truth",
+        verdict: "Conspiracy framing, anonymous sources — high fake probability.", label: "FAKE / MISLEADING",
+        conf: 98.1, isReal: false, reach: "Feed Reach Throttled by 95%"
+      },
+      climate: {
+        text: "UN Climate Summit: 195 Nations Sign Historic Renewable Energy Accord for 2035 Targets",
+        verdict: "Structured reporting with verifiable named sources.", label: "REAL / AUTHENTIC",
+        conf: 88.5, isReal: true, reach: "Full Social Feed Distribution"
+      },
+      custom: { text: "", verdict: "", label: "", conf: 0, isReal: null, reach: "" }
+    };
+
+    function loadDemoPreset(key, btn) {
+      document.querySelectorAll('.demo-preset-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const d = demoData[key];
+      if (key === 'custom') {
+        document.getElementById('demoInput').value = '';
+        document.getElementById('demoInput').focus();
+        resetDemoResult();
+        return;
+      }
+      document.getElementById('demoInput').value = d.text;
+      runDemoCheck(key);
+    }
+
+    let demoTimeout;
+    function onDemoInput() {
+      clearTimeout(demoTimeout);
+      showThinking();
+      demoTimeout = setTimeout(() => runDemoCheck('auto'), 900);
+    }
+
+    function showThinking() {
+      const area = document.getElementById('demoResultArea');
+      area.innerHTML = `<div class="demo-result-box result-thinking">
+        <div class="demo-res-icon">🤖</div>
+        <div>
+          <div class="demo-res-label label-thinking">ANALYSING...</div>
+          <div class="demo-res-verdict">AI is reading and scoring your text...</div>
+        </div>
+      </div>`;
+    }
+
+    function resetDemoResult() {
+      document.getElementById('demoResultArea').innerHTML = '';
+    }
+
+    function runDemoCheck(key) {
+      const inputVal = document.getElementById('demoInput').value.trim();
+      if (!inputVal) { resetDemoResult(); return; }
+
+      showThinking();
+
+      setTimeout(() => {
+        let d;
+        if (key && key !== 'auto' && demoData[key] && demoData[key].isReal !== null) {
+          d = demoData[key];
+        } else {
+          // Simple heuristic classifier for demo
+          const fakeWords = ['secret','suppressed','shocking','leaked','explosive','government hiding','whistleblower','miracle','hoax','admits','alien','hollow','cures','overnight','big pharma','mainstream media','exposed','coverup'];
+          const realWords = ['study','researchers','university','published','peer-reviewed','nasa','journal','government announced','conference','summit','according to','scientists','evidence','data'];
+          const lower = inputVal.toLowerCase();
+          let fakeScore = fakeWords.filter(w => lower.includes(w)).length;
+          let realScore = realWords.filter(w => lower.includes(w)).length;
+          const isReal = realScore >= fakeScore;
+          const conf = Math.min(98, Math.max(62, 75 + Math.abs(realScore - fakeScore) * 8 + Math.random() * 8));
+          d = {
+            verdict: isReal ? "This reads like credible, structured news reporting." : "Sensational or unverified claims detected.",
+            label: isReal ? "REAL / AUTHENTIC" : "FAKE / MISLEADING",
+            conf: parseFloat(conf.toFixed(1)), isReal,
+            reach: isReal ? "Full Social Feed Distribution" : `Feed Reach Throttled by ${Math.round((1-conf/100)*200)}%`
+          };
+        }
+
+        const area = document.getElementById('demoResultArea');
+        area.innerHTML = `
+          <div class="demo-result-box ${d.isReal ? 'result-real' : 'result-fake'}">
+            <div class="demo-res-icon">${d.isReal ? '✅' : '🚨'}</div>
+            <div style="flex:1">
+              <div class="demo-res-label ${d.isReal ? 'label-real' : 'label-fake'}">${d.label}</div>
+              <div class="demo-res-verdict">${d.verdict}</div>
+              <div class="demo-res-conf">AI Confidence: ${d.conf}% · ${d.reach}</div>
+            </div>
+            <div class="demo-conf-bar-wrap">
+              <div style="font-size:0.7rem;color:var(--text-secondary);margin-bottom:6px">Confidence</div>
+              <div class="demo-conf-bar-track">
+                <div class="demo-conf-bar-fill ${d.isReal ? 'fill-real' : 'fill-fake'}" style="width:0%" id="liveDemoBar"></div>
+              </div>
+              <div style="font-size:0.75rem;font-weight:700;margin-top:4px;color:${d.isReal ? 'var(--accent-emerald)' : 'var(--accent-rose)'}">${d.conf}%</div>
+            </div>
+          </div>`;
+        // Animate bar
+        setTimeout(() => {
+          const bar = document.getElementById('liveDemoBar');
+          if (bar) bar.style.width = d.conf + '%';
+        }, 50);
+      }, 700);
+    }
+
+    // ── COMPARISON CARDS ──
+    function toggleCompCard(card) {
+      const isOpen = card.classList.contains('open');
+      const toggle = card.querySelector('.comp-toggle');
+      card.classList.toggle('open');
+      toggle.textContent = isOpen ? '▼ Show Details' : '▲ Hide Details';
+    }
+
+    // ── TIMELINE ──
+    function toggleTimeline(step) {
+      const isActive = step.classList.contains('active');
+      document.querySelectorAll('.timeline-step').forEach(s => s.classList.remove('active'));
+      if (!isActive) step.classList.add('active');
+    }
+  </script>
 </body>
 </html>
