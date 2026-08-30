@@ -179,7 +179,7 @@
         reach: '0.05x Throttled',
         reachPct: 5,
         ocr: '"BREAKING: WHITE HOUSE ADMITS SECRET MOON BASE CONTROLS GLOBAL WEATHER AND TIDAL FREQUENCIES"',
-        ocrScore: 'AI Verdict: 98.2% Fabricated News',
+        ocrScore: 'PAC NLP: 98.2% Fabricated News',
         tokens: ['secret', 'admits', 'frequencies', 'controls'],
         provTag: 'Template Generator Match',
         provText: 'Generated via automated meme canvas. Missing C2PA authenticity headers; conflicting JPEG quantisation tables.',
@@ -205,7 +205,7 @@
         reach: '0.05x Throttled',
         reachPct: 5,
         ocr: '"STATEMENT FROM PRESIDENCY: EMERGENCY CRISIS DECLARATION SIGNED LIVE ON AIR"',
-        ocrScore: 'AI Verdict: 96.1% Fabricated News',
+        ocrScore: 'PAC NLP: 96.1% Fabricated News',
         tokens: ['emergency', 'declaration', 'crisis', 'signed live'],
         provTag: 'Synthetic GAN Fingerprint Confirmed',
         provText: 'Cross-spectral FFT decomposition confirms synthetic generative model architecture (StyleGAN / Midjourney v6 signature).',
@@ -229,7 +229,7 @@
         reach: '1.0x Full Reach',
         reachPct: 100,
         ocr: '"GLOBAL CLIMATE SUMMIT: SCIENTIFIC CONSENSUS REPORTS 12% REDUCTION IN EMISSIONS ACROSS 45 NATIONS"',
-        ocrScore: 'AI Verdict: 96.8% Reliable News',
+        ocrScore: 'PAC NLP: 96.8% Reliable News',
         tokens: ['scientific', 'consensus', 'emissions', 'nations'],
         provTag: 'Verified C2PA Digital Signature',
         provText: 'Cryptographically linked to accredited wire service camera device (Nikon Z9, firmware authenticated). Exact match in AP/Reuters archive.',
@@ -251,7 +251,7 @@
         reach: '0.05x Throttled',
         reachPct: 5,
         ocr: '"URGENT VIDEO: MAJOR PIPELINE DETONATION REPORTED IN CENTRAL CAPITAL MINUTES AGO"',
-        ocrScore: 'AI Verdict: 97.6% Fabricated News',
+        ocrScore: 'PAC NLP: 97.6% Fabricated News',
         tokens: ['urgent video', 'major detonation', 'minutes ago'],
         provTag: 'Reverse Video Frame Match: 2017 Event',
         provText: 'Keyframe perceptual hash matches archived Reuters footage from 2017. Current breaking news attribution is completely fabricated.',
@@ -303,7 +303,7 @@
       document.getElementById('reachBar').className = `meter-bar-fill ${p.isFake ? 'fake-fill' : ''}`;
       document.getElementById('reachDesc').textContent = p.isFake 
         ? 'Social virality throttled by 95% to prevent deceptive disinformation contagion.'
-        : 'Full normal distribution authorized across social media feeds.';
+        : 'Full normal distribution authorized across algorithmic feeds.';
 
       document.getElementById('ocrBadge').textContent = p.ocrScore;
       document.getElementById('ocrText').textContent = p.ocr;
