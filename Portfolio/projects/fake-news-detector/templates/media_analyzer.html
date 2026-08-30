@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Media &amp; Deepfake Forensics — FAKEBUSTER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="ambient-glow glow-top"></div>
+
+  <!-- Header -->
+  <header class="site-header">
+    <div class="nav-container">
+      <a href="/" class="brand-logo">
+        <span class="brand-shield">🛡️</span>
+        <span class="brand-text">Fake<span class="brand-accent">Buster</span></span>
+      </a>
+      <nav class="nav-links">
+        <a href="/">Home</a>
+        <a href="/predict">Check News</a>
+        <a href="/media" class="active-link">Check Photos &amp; Videos</a>
+        <a href="/nlp-lab">Text Analysis Lab</a>
+        <a href="/benchmark">AI Accuracy &amp; Models</a>
+        <a href="/batch">Check Multiple Articles</a>
+        <a href="/sources">News Source Ratings</a>
+        <a href="/docs">Developer API</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="studio-main">
+    <div class="studio-container full-width">
+      <div class="studio-header">
+        <span class="section-badge">Photo &amp; Video Verifier</span>
+        <h1 class="studio-title">Check Photos &amp; Videos (Deepfakes &amp; Edits)</h1>
+        <p class="studio-subtext"><strong>“Bust the Fake. Find the Facts.”</strong> — Upload any photo, news screenshot, or video to check for digital tampering, AI generation, and out-of-context claims.</p>
+      </div>
+
+      <div class="fn-media-grid">
+        <!-- Left: Upload & Presets -->
+        <div class="fn-media-upload-card">
+          <div class="fn-card-title-row">
+            <span>Step 1: Upload a File or Pick a Sample</span>
+            <span class="model-badge">Vision AI + Text OCR</span>
+          </div>
+          <p class="fn-instruction">Upload any photo or video clip to scan for digital edits, AI faces, and extracted text:</p>
+
+          <!-- Dropzone -->
+          <div class="media-dropzone" id="mediaDropzone" onclick="document.getElementById('fileInput').click()">
+            <input type="file" id="fileInput" accept="image/*,video/*" style="display: none;" onchange="handleStandaloneFileUpload(event)">
+            <div class="dropzone-content">
+              <div class="drop-icon">📸</div>
+              <h4>Drop your photo or video here</h4>
+              <p>Supports PNG, JPG, WEBP, MP4, WEBM (up to 50MB)</p>
+              <button type="button" class="btn btn-outline btn-sm">Browse Files</button>
+            </div>
+          </div>
+
+          <!-- Presets -->
+          <div class="media-presets-wrap">
+            <span class="mp-label">Try an Example:</span>
+            <div class="mp-buttons">
+              <button type="button" class="media-preset-btn active" onclick="loadStandalonePreset('doctored')">🚨 Edited Headline</button>
+              <button type="button" class="media-preset-btn" onclick="loadStandalonePreset('deepfake')">🤖 AI Deepfake</button>
+              <button type="button" class="media-preset-btn" onclick="loadStandalonePreset('real')">✅ Real Photo</button>
+              <button type="button" class="media-preset-btn" onclick="loadStandalonePreset('recycled')">⚠️ Recycled Video</button>
+            </div>
+          </div>
+
+          <div class="media-feature-toggles">
+            <label class="toggle-control">
+              <input type="checkbox" id="elaToggle" onchange="toggleStandaloneEla()">
+              <span class="toggle-track"></span>
+              <span class="toggle-text">👁️ Tampering Heatmap (ELA)</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Right: Preview & Verdict -->
+        <div class="fn-media-results-card">
+          <div class="fn-card-title-row">
+            <span>Step 2: Verification Results</span>
+            <span class="badge-pill safe" id="scanStatusBadge">Scan Complete</span>
+          </div>
+
+          <div class="media-preview-box" id="mediaPreviewBox">
+            <div class="scanner-laser" id="scannerLaser"></div>
+            <div id="mediaDisplayArea" class="media-canvas-wrap">
+              <img id="imagePreview" src="" alt="Forensic Inspection Preview" style="display: none;">
+              <video id="videoPreview" src="" controls style="display: none;"></video>
+              <div class="media-placeholder" id="mediaPlaceholder">
+                <span class="ph-icon">🔬</span>
+                <span>Ready for Multimodal Forensic Inspection</span>
+              </div>
+            </div>
+            <div class="media-info-pill" id="mediaInfoPill">Doctored_Headline.jpg · 1920x1080 · JPG</div>
+          </div>
+
+          <div class="media-verdict-details">
+            <div class="media-verdict-hero danger" id="verdictHero">
+              <div class="mvh-icon" id="verdictIcon">🚨</div>
+              <div class="mvh-text">
+                <span class="mvh-sub" id="verdictSub">TAMPERED / FAKE PHOTO</span>
+                <h3 id="verdictHeadline">Altered News Headline Screenshot</h3>
+              </div>
+            </div>
+
+            <div class="media-metrics-grid">
+              <div class="media-metric-box">
+                <div class="mmb-head">
+                  <span>Deepfake &amp; AI Risk:</span>
+                  <strong class="mmb-score danger" id="deepfakeScore">94.8% Risk</strong>
+                </div>
+                <div class="meter-bar-track">
+                  <div class="meter-bar-fill fake-fill" id="deepfakeBar" style="width: 94.8%;"></div>
+                </div>
+                <p class="mmb-desc" id="deepfakeDesc">Digital tampering detected around text banner boundaries.</p>
+              </div>
+
+              <div class="media-metric-box">
+                <div class="mmb-head">
+                  <span>Allowed Social Feed Reach:</span>
+                  <strong class="mmb-score danger" id="reachScore">0.05x Throttled</strong>
+                </div>
+                <div class="meter-bar-track">
+                  <div class="meter-bar-fill fake-fill" id="reachBar" style="width: 5%;"></div>
+                </div>
+                <p class="mmb-desc" id="reachDesc">Post reach throttled by 95% to stop viral spread of misleading visuals.</p>
+              </div>
+            </div>
+
+            <!-- OCR Text Extraction & PAC NLP -->
+            <div class="ocr-inspection-card">
+              <div class="ocr-card-head">
+                <span class="ocr-title">Text Found in Image (Fact-Checked by AI):</span>
+                <span class="ocr-badge" id="ocrBadge">AI Verdict: 98.2% Fake</span>
+              </div>
+              <div class="ocr-text-box" id="ocrText">
+                "BREAKING: WHITE HOUSE ADMITS SECRET MOON BASE CONTROLS GLOBAL WEATHER AND TIDAL FREQUENCIES"
+              </div>
+              <div class="ocr-tokens-row" id="ocrTokens">
+                <span class="kw-chip fake-kw">secret</span>
+                <span class="kw-chip fake-kw">admits</span>
+                <span class="kw-chip fake-kw">frequencies</span>
+                <span class="kw-chip fake-kw">controls</span>
+              </div>
+            </div>
+
+            <!-- Provenance -->
+            <div class="provenance-card">
+              <div class="prov-head">
+                <span>File Origin &amp; Camera Details:</span>
+                <span class="prov-tag" id="provTag">Meme Template Detected</span>
+              </div>
+              <p class="prov-text" id="provText">
+                Created with an online editing tool. Missing genuine camera sensor metadata.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script>
+    const standalonePresets = {
+      fakeScreenshot: {
+        filename: 'viral_doctored_headline.png',
+        title: 'Manipulated Breaking News Banner (Fabricated Screenshot)',
+        sub: 'Pixel Grid Mismatch & Typography Artifacts Detected',
+        isFake: true,
+        deepfake: '94.8% Risk',
+        deepfakePct: 94.8,
+        deepfakeDesc: 'Error Level Analysis reveals severe compression divergence along headline banner boundaries.',
+        reach: '0.05x Throttled',
+        reachPct: 5,
+        ocr: '"BREAKING: WHITE HOUSE ADMITS SECRET MOON BASE CONTROLS GLOBAL WEATHER AND TIDAL FREQUENCIES"',
+        ocrScore: 'PAC NLP: 98.2% Fabricated News',
+        tokens: ['secret', 'admits', 'frequencies', 'controls'],
+        provTag: 'Template Generator Match',
+        provText: 'Generated via automated meme canvas. Missing C2PA authenticity headers; conflicting JPEG quantisation tables.',
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+          <rect width="640" height="360" fill="#0b0f19"/>
+          <rect x="0" y="240" width="640" height="120" fill="#dc2626"/>
+          <rect x="20" y="255" width="180" height="32" fill="#fff" rx="4"/>
+          <text x="30" y="278" font-family="'Impact', sans-serif" font-size="22" font-weight="900" fill="#dc2626">BREAKING NEWS</text>
+          <text x="220" y="278" font-family="'Arial', sans-serif" font-size="16" font-weight="bold" fill="#fff">LIVE SPECIAL REPORT</text>
+          <text x="30" y="325" font-family="'Impact', sans-serif" font-size="24" fill="#fef08a">WHITE HOUSE ADMITS SECRET MOON BASE CONTROLS WEATHER</text>
+          <rect x="40" y="40" width="560" height="180" fill="#1e293b" rx="8" stroke="#334155"/>
+          <text x="320" y="135" text-anchor="middle" font-family="sans-serif" font-size="16" fill="#94a3b8">⚠️ [FABRICATED MEDIA: DOCTORED LOWER-THIRD GRAPHIC]</text>
+        </svg>`
+      },
+      deepfakeAi: {
+        filename: 'ai_synthetic_briefing.jpg',
+        title: 'Synthetic AI Deepfake (Diffusion / GAN Generation)',
+        sub: 'Facial Biometric Asymmetry & Diffusion Lattice Noise Detected',
+        isFake: true,
+        deepfake: '98.6% Risk',
+        deepfakePct: 98.6,
+        deepfakeDesc: 'Frequency spectrum analysis detects characteristic high-frequency GAN checkboard patterns and pupil corneal reflection mismatches.',
+        reach: '0.05x Throttled',
+        reachPct: 5,
+        ocr: '"STATEMENT FROM PRESIDENCY: EMERGENCY CRISIS DECLARATION SIGNED LIVE ON AIR"',
+        ocrScore: 'PAC NLP: 96.1% Fabricated News',
+        tokens: ['emergency', 'declaration', 'crisis', 'signed live'],
+        provTag: 'Synthetic GAN Fingerprint Confirmed',
+        provText: 'Cross-spectral FFT decomposition confirms synthetic generative model architecture (StyleGAN / Midjourney v6 signature).',
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+          <rect width="640" height="360" fill="#090d16"/>
+          <circle cx="320" cy="160" r="90" fill="#1e293b" stroke="#ec4899" stroke-width="2"/>
+          <circle cx="285" cy="145" r="12" fill="none" stroke="#06b6d4" stroke-width="2"/>
+          <circle cx="355" cy="145" r="14" fill="none" stroke="#f43f5e" stroke-width="2"/>
+          <rect x="250" y="270" width="140" height="26" fill="#f43f5e" rx="4"/>
+          <text x="320" y="288" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="12" font-weight="bold" fill="#fff">DEEPFAKE 98.6%</text>
+        </svg>`
+      },
+      authenticPress: {
+        filename: 'g7_climate_conference.webp',
+        title: 'Authentic Press Briefing (Verified Provenance & Neutral EXIF)',
+        sub: 'C2PA Cryptographic Provenance Confirmed · Natural Sensor Noise',
+        isFake: false,
+        deepfake: '1.8% Clean',
+        deepfakePct: 1.8,
+        deepfakeDesc: 'Uniform ISO camera sensor noise distribution. Unaltered natural optical light gradients across human subjects and background.',
+        reach: '1.0x Full Reach',
+        reachPct: 100,
+        ocr: '"GLOBAL CLIMATE SUMMIT: SCIENTIFIC CONSENSUS REPORTS 12% REDUCTION IN EMISSIONS ACROSS 45 NATIONS"',
+        ocrScore: 'PAC NLP: 96.8% Reliable News',
+        tokens: ['scientific', 'consensus', 'emissions', 'nations'],
+        provTag: 'Verified C2PA Digital Signature',
+        provText: 'Cryptographically linked to accredited wire service camera device (Nikon Z9, firmware authenticated). Exact match in AP/Reuters archive.',
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+          <rect width="640" height="360" fill="#0f172a"/>
+          <rect x="60" y="60" width="520" height="240" fill="#1e293b" rx="12" stroke="#10b981" stroke-width="2"/>
+          <rect x="80" y="80" width="220" height="32" fill="#10b981" rx="6"/>
+          <text x="95" y="102" font-family="sans-serif" font-size="14" font-weight="bold" fill="#fff">✓ C2PA VERIFIED AUTHENTIC</text>
+        </svg>`
+      },
+      outOfContextVideo: {
+        filename: 'recycled_disaster_footage.mp4',
+        title: 'Recycled 2017 Industrial Accident Falsely Relabeled as Current Event',
+        sub: 'Out-of-Context Media Recycling · Misleading Geo-Temporal Captioning',
+        isFake: true,
+        deepfake: '89.4% Context Mismatch',
+        deepfakePct: 89.4,
+        deepfakeDesc: 'Video is visually authentic footage from August 2017 in Veracruz, Mexico, but deceptively recycled with fabricated breaking news claims.',
+        reach: '0.05x Throttled',
+        reachPct: 5,
+        ocr: '"URGENT VIDEO: MAJOR PIPELINE DETONATION REPORTED IN CENTRAL CAPITAL MINUTES AGO"',
+        ocrScore: 'PAC NLP: 97.6% Fabricated News',
+        tokens: ['urgent video', 'major detonation', 'minutes ago'],
+        provTag: 'Reverse Video Frame Match: 2017 Event',
+        provText: 'Keyframe perceptual hash matches archived Reuters footage from 2017. Current breaking news attribution is completely fabricated.',
+        svg: `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 360" width="100%" height="100%">
+          <rect width="640" height="360" fill="#020617"/>
+          <circle cx="320" cy="180" r="50" fill="#ea580c"/>
+          <circle cx="320" cy="180" r="30" fill="rgba(0,0,0,0.7)" stroke="#fff" stroke-width="2"/>
+          <polygon points="312,168 335,180 312,192" fill="#fff"/>
+          <text x="320" y="320" text-anchor="middle" font-family="sans-serif" font-size="14" fill="#f87171">🚨 RECYCLED 2017 FOOTAGE DETECTED</text>
+        </svg>`
+      }
+    };
+
+    let isElaActive = false;
+
+    function loadStandalonePreset(key) {
+      const p = standalonePresets[key];
+      if (!p) return;
+
+      document.querySelectorAll('.media-preset-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(key));
+      });
+
+      document.getElementById('mediaFilename').textContent = p.filename;
+      document.getElementById('mediaPlaceholder').style.display = 'none';
+
+      const imgEl = document.getElementById('imagePreview');
+      const vidEl = document.getElementById('videoPreview');
+      vidEl.style.display = 'none';
+      imgEl.src = 'data:image/svg+xml;utf8,' + encodeURIComponent(p.svg);
+      imgEl.style.display = 'block';
+
+      document.getElementById('verdictHero').className = `media-verdict-hero ${p.isFake ? 'fake-active' : 'real-active'}`;
+      document.getElementById('verdictIcon').textContent = p.isFake ? '🚨' : '✅';
+      document.getElementById('verdictSub').textContent = p.sub;
+      document.getElementById('verdictTitle').textContent = p.title;
+      document.getElementById('statusPill').textContent = p.isFake ? 'High Risk' : 'Safe';
+      document.getElementById('statusPill').className = `badge-pill ${p.isFake ? 'danger' : 'safe'}`;
+
+      document.getElementById('deepfakeScore').textContent = p.deepfake;
+      document.getElementById('deepfakeScore').className = `mmb-score ${p.isFake ? 'danger' : 'safe'}`;
+      document.getElementById('deepfakeBar').style.width = p.deepfakePct + '%';
+      document.getElementById('deepfakeBar').className = `meter-bar-fill ${p.isFake ? 'fake-fill' : ''}`;
+      document.getElementById('deepfakeDesc').textContent = p.deepfakeDesc;
+
+      document.getElementById('reachScore').textContent = p.reach;
+      document.getElementById('reachScore').className = `mmb-score ${p.isFake ? 'danger' : 'safe'}`;
+      document.getElementById('reachBar').style.width = p.reachPct + '%';
+      document.getElementById('reachBar').className = `meter-bar-fill ${p.isFake ? 'fake-fill' : ''}`;
+      document.getElementById('reachDesc').textContent = p.isFake 
+        ? 'Social virality throttled by 95% to prevent deceptive disinformation contagion.'
+        : 'Full normal distribution authorized across algorithmic feeds.';
+
+      document.getElementById('ocrBadge').textContent = p.ocrScore;
+      document.getElementById('ocrText').textContent = p.ocr;
+      document.getElementById('ocrTokens').innerHTML = p.tokens.map(t => `<span class="kw-chip ${p.isFake ? 'fake-kw' : ''}">${t}</span>`).join('');
+
+      document.getElementById('provTag').textContent = p.provTag;
+      document.getElementById('provText').textContent = p.provText;
+
+      triggerStandaloneScan();
+    }
+
+    function triggerStandaloneScan() {
+      const laser = document.getElementById('scannerLaser');
+      laser.classList.remove('scanning');
+      void laser.offsetWidth;
+      laser.classList.add('scanning');
+    }
+
+    function toggleStandaloneEla() {
+      isElaActive = !isElaActive;
+      const img = document.getElementById('imagePreview');
+      const btn = document.getElementById('elaToggleBtn');
+      if (isElaActive) {
+        img.style.filter = 'invert(1) contrast(200%) hue-rotate(180deg)';
+        btn.classList.add('active');
+      } else {
+        img.style.filter = '';
+        btn.classList.remove('active');
+      }
+    }
+
+    function handleStandaloneFileUpload(event) {
+      const file = event.target.files && event.target.files[0];
+      if (!file) return;
+
+      const isVideo = file.type.startsWith('video');
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        document.getElementById('mediaFilename').textContent = file.name;
+        document.getElementById('mediaPlaceholder').style.display = 'none';
+
+        const imgEl = document.getElementById('imagePreview');
+        const vidEl = document.getElementById('videoPreview');
+
+        if (isVideo) {
+          imgEl.style.display = 'none';
+          vidEl.src = e.target.result;
+          vidEl.style.display = 'block';
+        } else {
+          vidEl.style.display = 'none';
+          imgEl.src = e.target.result;
+          imgEl.style.display = 'block';
+        }
+
+        triggerStandaloneScan();
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Auto-load initial preset
+    window.addEventListener('DOMContentLoaded', () => {
+      loadStandalonePreset('fakeScreenshot');
+    });
+  </script>
+</body>
+</html>
